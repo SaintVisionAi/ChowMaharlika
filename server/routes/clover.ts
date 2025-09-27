@@ -23,7 +23,10 @@ async function cloverFetch(path: string, init?: RequestInit) {
   let lastErr: any;
   for (const base of bases) {
     try {
-      const url = `${base}${path}`;
+      const urlBase = `${base}${path}`;
+      const url = urlBase.includes("?")
+        ? `${urlBase}&access_token=${encodeURIComponent(token)}`
+        : `${urlBase}?access_token=${encodeURIComponent(token)}`;
       const headers: Record<string, string> = {
         "content-type": "application/json",
         Authorization: `Bearer ${token}`,
