@@ -6,7 +6,9 @@ import type {
   CloverCatalogResponse,
 } from "@shared/api";
 
-const CLOVER_BASE = "https://api.clover.com/v3"; // Public Clover v3 API
+const DEFAULT_BASE = "https://api.clover.com/v3";
+const SANDBOX_BASE = "https://sandbox.dev.clover.com/v3";
+const CLOVER_BASE = process.env.CLOVER_BASE_URL || DEFAULT_BASE;
 
 function ensureEnv() {
   const token = process.env.CLOVER_API_KEY;
@@ -17,17 +19,20 @@ function ensureEnv() {
 async function cloverFetch(path: string, init?: RequestInit) {
   const { token } = ensureEnv();
   if (!token) throw new Error("Missing CLOVER_API_KEY");
-  const url = `${CLOVER_BASE}${path}`;
-  const headers: Record<string, string> = {
-    "content-type": "application/json",
-    Authorization: `Bearer ${token}`,
-  };
-  const res = await fetch(url, {
-    ...init,
-    headers: { ...headers, ...(init?.headers as any) },
-  });
-  if (!res.ok) throw new Error(`Clover ${res.status}: ${await res.text()}`);
-  return res.json();
+  const bases = [CLOVER_BASE, SANDBOX_BASE];
+  let lastErr: any;
+  for (const base of bases) {
+    try {
+      const url = `${base}${path}`;
+      const headers: Record<string, string> = { "content-type": "application/json", Authorization: `Bearer ${token}` };
+      const res = await fetch(url, { ...init, headers: { ...headers, ...(init?.headers as any) } });
+      if (!res.ok) throw new Error(`Clover ${res.status}: ${await res.text()}`);
+      return await res.json();
+    } catch (e) {
+      lastErr = e;
+    }
+  }
+  throw lastErr;
 }
 
 export const getCloverStatus: RequestHandler = (_req, res) => {
@@ -191,3 +196,32 @@ async function listItemsPromise() {
   }));
   return { items };
 }
+
+export const getItemImages: RequestHandler = async (req, res) => {
+  try {
+    const { merchantId } = ensureEnv();
+    if (!merchantId) throw new Error("Missing CLOVER_MERCHANT_ID");
+    const id = String(req.params.id);
+    const candidates = [
+      `/merchants/${merchantId}/items/${id}/images`,
+      `/merchants/${merchantId}/item/${id}/images`,
+    ];
+    for (const path of candidates) {
+      try {
+        const data: any = await cloverFetch(path);
+        const elements = Array.isArray(data) ? data : data?.elements;
+        if (!elements) continue;
+        const urls = elements
+          .map((img: any) => img.url || img.imageUrl || img.href || null)
+          .filter(Boolean)
+          .map((s: any) => String(s));
+        if (urls.length) return res.json({ images: urls });
+      } catch {
+        // try next
+      }
+    }
+    res.json({ images: [] });
+  } catch (e: any) {
+    res.status(502).json({ error: e?.message || String(e) });
+  }
+};
