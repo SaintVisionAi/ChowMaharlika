@@ -8,6 +8,7 @@ import {
   listItems,
   getCatalog,
   listStock,
+  getItemImages,
 } from "./routes/clover";
 import { chatHandler } from "./routes/chat";
 
