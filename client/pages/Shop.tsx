@@ -34,7 +34,7 @@ export default function Shop() {
       const q = query.trim().toLowerCase();
       list = list.filter((i) => i.name.toLowerCase().includes(q) || (i.code || "").toLowerCase().includes(q));
     }
-    return list.sort((a, b) => a.name.localeCompare(b.name));
+    return list.sort((a, b) => (Number((b.stock ?? 0) > 0) - Number((a.stock ?? 0) > 0)) || a.name.localeCompare(b.name));
   }, [data, query, category]);
 
   return (
