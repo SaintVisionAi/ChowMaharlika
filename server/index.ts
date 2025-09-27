@@ -2,7 +2,13 @@ import "dotenv/config";
 import express from "express";
 import cors from "cors";
 import { handleDemo } from "./routes/demo";
-import { getCloverStatus, listCategories, listItems, getCatalog, listStock } from "./routes/clover";
+import {
+  getCloverStatus,
+  listCategories,
+  listItems,
+  getCatalog,
+  listStock,
+} from "./routes/clover";
 import { chatHandler } from "./routes/chat";
 
 export function createServer() {
