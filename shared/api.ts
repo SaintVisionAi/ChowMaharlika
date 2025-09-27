@@ -16,5 +16,7 @@ export interface CloverItem {
   code?: string;
   category?: string;
   imageUrl?: string;
+  stock?: number | null;
 }
+export interface CloverStock { itemId: string; quantity: number | null }
 export interface CloverCatalogResponse { categories: CloverCategory[]; items: CloverItem[] }
