@@ -3,6 +3,7 @@ import express from "express";
 import cors from "cors";
 import { handleDemo } from "./routes/demo";
 import { getCloverStatus } from "./routes/clover";
+import { chatHandler } from "./routes/chat";
 
 export function createServer() {
   const app = express();
@@ -22,6 +23,9 @@ export function createServer() {
 
   // Clover integration status endpoint
   app.get("/api/clover/status", getCloverStatus);
+
+  // OpenAI chat proxy
+  app.post("/api/chat", chatHandler);
 
   return app;
 }
