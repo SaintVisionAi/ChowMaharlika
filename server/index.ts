@@ -2,7 +2,7 @@ import "dotenv/config";
 import express from "express";
 import cors from "cors";
 import { handleDemo } from "./routes/demo";
-import { getCloverStatus } from "./routes/clover";
+import { getCloverStatus, listCategories, listItems, getCatalog } from "./routes/clover";
 import { chatHandler } from "./routes/chat";
 
 export function createServer() {
@@ -21,8 +21,11 @@ export function createServer() {
 
   app.get("/api/demo", handleDemo);
 
-  // Clover integration status endpoint
+  // Clover integration endpoints
   app.get("/api/clover/status", getCloverStatus);
+  app.get("/api/clover/categories", listCategories);
+  app.get("/api/clover/items", listItems);
+  app.get("/api/clover/catalog", getCatalog);
 
   // OpenAI chat proxy
   app.post("/api/chat", chatHandler);
