@@ -57,6 +57,19 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+        gold: {
+          300: "var(--gold-300)",
+          400: "var(--gold-400)",
+          500: "var(--gold-500)",
+          600: "var(--gold-600)",
+          700: "var(--gold-700)",
+        },
+        charcoal: {
+          700: "var(--charcoal-700)",
+          800: "var(--charcoal-800)",
+          850: "var(--charcoal-850)",
+          900: "var(--charcoal-900)",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -84,6 +97,13 @@ export default {
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+      },
+      fontFamily: {
+        brand: ["Cinzel", "serif"],
+        sans: ["Inter", "system-ui", "-apple-system", "Segoe UI", "Roboto", "sans-serif"],
+      },
+      boxShadow: {
+        "glow-gold": "0 1px 2px 0 hsl(var(--gold-700)/0.3), 0 0 0 1px hsl(var(--gold-600)/0.6), 0 6px 20px -6px hsl(var(--gold-600)/0.35)",
       },
     },
   },

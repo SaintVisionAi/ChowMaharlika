@@ -10,3 +10,8 @@
 export interface DemoResponse {
   message: string;
 }
+
+export interface CloverStatusResponse {
+  connected: boolean;
+  missing: string[];
+}

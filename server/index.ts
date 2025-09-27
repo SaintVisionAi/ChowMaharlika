@@ -2,6 +2,7 @@ import "dotenv/config";
 import express from "express";
 import cors from "cors";
 import { handleDemo } from "./routes/demo";
+import { getCloverStatus } from "./routes/clover";
 
 export function createServer() {
   const app = express();
@@ -18,6 +19,9 @@ export function createServer() {
   });
 
   app.get("/api/demo", handleDemo);
+
+  // Clover integration status endpoint
+  app.get("/api/clover/status", getCloverStatus);
 
   return app;
 }
