@@ -64,16 +64,62 @@ export const listItems: RequestHandler = async (req, res) => {
 
 export const getCatalog: RequestHandler = async (_req, res) => {
   try {
-    const [catsRes, itemsRes] = await Promise.all([
+    const [catsRes, itemsRes, stockRes] = await Promise.all([
       listCategoriesPromise(),
       listItemsPromise(),
+      listStockPromise(),
     ]);
-    const payload: CloverCatalogResponse = { categories: catsRes.categories, items: itemsRes.items };
+    const stockMap = new Map<string, number | null>(stockRes.map((s) => [s.itemId, s.quantity]));
+    const items = itemsRes.items.map((it) => ({ ...it, stock: stockMap.get(it.id) ?? null }));
+    const payload: CloverCatalogResponse = { categories: catsRes.categories, items };
     res.json(payload);
   } catch (e: any) {
     res.status(502).json({ error: e?.message || String(e) });
   }
 };
+
+export const listStock: RequestHandler = async (_req, res) => {
+  try {
+    const data = await listStockPromise();
+    res.json({ stock: data });
+  } catch (e: any) {
+    res.status(502).json({ error: e?.message || String(e) });
+  }
+};
+
+async function listStockPromise() {
+  const { merchantId } = ensureEnv();
+  if (!merchantId) throw new Error("Missing CLOVER_MERCHANT_ID");
+  // Try multiple known paths; return first successful structure
+  const candidates = [
+    `/merchants/${merchantId}/inventory/item_stocks?limit=1000`,
+    `/merchants/${merchantId}/item_stocks?limit=1000`,
+    `/merchants/${merchantId}/inventory/items?limit=1000`,
+  ];
+  for (const path of candidates) {
+    try {
+      const data: any = await cloverFetch(path);
+      const elements = Array.isArray(data) ? data : data?.elements;
+      if (!elements) continue;
+      // Try to normalize common shapes
+      const out = elements
+        .map((e: any) => {
+          if (e.item && (e.quantity != null || e.stockCount != null)) {
+            return { itemId: String(e.item.id || e.itemId || e.id), quantity: Number(e.quantity ?? e.stockCount ?? 0) };
+          }
+          if ((e.itemId || e.id) && (e.quantity != null || e.stockCount != null)) {
+            return { itemId: String(e.itemId || e.id), quantity: Number(e.quantity ?? e.stockCount ?? 0) };
+          }
+          return undefined;
+        })
+        .filter(Boolean);
+      if (out.length) return out as Array<{ itemId: string; quantity: number | null }>;
+    } catch {
+      // try next
+    }
+  }
+  return [] as Array<{ itemId: string; quantity: number | null }>;
+}
 
 async function listCategoriesPromise() {
   const { merchantId } = ensureEnv();
