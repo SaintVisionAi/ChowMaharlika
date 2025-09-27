@@ -26,6 +26,7 @@ export function createServer() {
   app.get("/api/clover/categories", listCategories);
   app.get("/api/clover/items", listItems);
   app.get("/api/clover/catalog", getCatalog);
+  app.get("/api/clover/stock", listStock);
 
   // OpenAI chat proxy
   app.post("/api/chat", chatHandler);
