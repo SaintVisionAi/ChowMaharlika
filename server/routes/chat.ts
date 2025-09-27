@@ -1,8 +1,12 @@
 import { RequestHandler } from "express";
 import { ChatRequest, ChatResponse, ChatMessage } from "@shared/api";
 
+const OPENAI_BASE = process.env.OPENAI_BASE_URL || process.env.OPENAI_ENDPOINT || "https://api.openai.com/v1";
 const DEFAULT_MODEL = process.env.OPENAI_MODEL || "gpt-4o-mini";
-const OPENAI_BASE = process.env.OPENAI_BASE_URL || "https://api.openai.com/v1";
+const AZURE_DEPLOYMENT = process.env.OPENAI_DEPLOYMENT_NAME;
+const AZURE_API_VERSION = process.env.OPENAI_API_VERSION || "2024-02-15-preview";
+
+const IS_AZURE = /azure\.com/.test(OPENAI_BASE) || Boolean(AZURE_DEPLOYMENT);
 
 const systemMessage: ChatMessage = {
   role: "system",
@@ -22,14 +26,19 @@ export const chatHandler: RequestHandler = async (req, res) => {
   const messages = [systemMessage, ...(body.messages || [])];
 
   try {
-    const r = await fetch(`${OPENAI_BASE}/chat/completions`, {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-        authorization: `Bearer ${apiKey}`,
-      },
-      body: JSON.stringify({ model, messages, temperature: 0.3 }),
-    });
+    const url = IS_AZURE
+      ? `${OPENAI_BASE.replace(/\/$/, "")}/openai/deployments/${encodeURIComponent(AZURE_DEPLOYMENT || "")}/chat/completions?api-version=${encodeURIComponent(AZURE_API_VERSION)}`
+      : `${OPENAI_BASE.replace(/\/$/, "")}/chat/completions`;
+
+    const headers: Record<string, string> = { "content-type": "application/json" };
+    if (IS_AZURE) headers["api-key"] = apiKey;
+    else headers["authorization"] = `Bearer ${apiKey}`;
+
+    const payload: any = IS_AZURE
+      ? { messages, temperature: 0.3 }
+      : { model, messages, temperature: 0.3 };
+
+    const r = await fetch(url, { method: "POST", headers, body: JSON.stringify(payload) });
 
     if (!r.ok) {
       const text = await r.text();
