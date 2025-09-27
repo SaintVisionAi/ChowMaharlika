@@ -24,8 +24,14 @@ async function cloverFetch(path: string, init?: RequestInit) {
   for (const base of bases) {
     try {
       const url = `${base}${path}`;
-      const headers: Record<string, string> = { "content-type": "application/json", Authorization: `Bearer ${token}` };
-      const res = await fetch(url, { ...init, headers: { ...headers, ...(init?.headers as any) } });
+      const headers: Record<string, string> = {
+        "content-type": "application/json",
+        Authorization: `Bearer ${token}`,
+      };
+      const res = await fetch(url, {
+        ...init,
+        headers: { ...headers, ...(init?.headers as any) },
+      });
       if (!res.ok) throw new Error(`Clover ${res.status}: ${await res.text()}`);
       return await res.json();
     } catch (e) {
