@@ -26,10 +26,22 @@ const App = () => (
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/shop" element={<Placeholder title="Shop" />} />
-              <Route path="/delivery" element={<Placeholder title="Delivery" />} />
-              <Route path="/rewards" element={<Placeholder title="Rewards" />} />
-              <Route path="/inventory" element={<Placeholder title="Inventory Dashboard" />} />
-              <Route path="/account" element={<Placeholder title="Account" />} />
+              <Route
+                path="/delivery"
+                element={<Placeholder title="Delivery" />}
+              />
+              <Route
+                path="/rewards"
+                element={<Placeholder title="Rewards" />}
+              />
+              <Route
+                path="/inventory"
+                element={<Placeholder title="Inventory Dashboard" />}
+              />
+              <Route
+                path="/account"
+                element={<Placeholder title="Account" />}
+              />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </div>

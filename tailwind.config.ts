@@ -100,10 +100,18 @@ export default {
       },
       fontFamily: {
         brand: ["Cinzel", "serif"],
-        sans: ["Inter", "system-ui", "-apple-system", "Segoe UI", "Roboto", "sans-serif"],
+        sans: [
+          "Inter",
+          "system-ui",
+          "-apple-system",
+          "Segoe UI",
+          "Roboto",
+          "sans-serif",
+        ],
       },
       boxShadow: {
-        "glow-gold": "0 1px 2px 0 hsl(var(--gold-700)/0.3), 0 0 0 1px hsl(var(--gold-600)/0.6), 0 6px 20px -6px hsl(var(--gold-600)/0.35)",
+        "glow-gold":
+          "0 1px 2px 0 hsl(var(--gold-700)/0.3), 0 0 0 1px hsl(var(--gold-600)/0.6), 0 6px 20px -6px hsl(var(--gold-600)/0.35)",
       },
     },
   },

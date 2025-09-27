@@ -9,7 +9,9 @@ function NavItem({ to, label }: { to: string; label: string }) {
       className={({ isActive }) =>
         [
           "px-3 py-2 rounded-md text-sm font-medium transition-colors",
-          isActive ? "text-primary" : "text-foreground/80 hover:text-foreground",
+          isActive
+            ? "text-primary"
+            : "text-foreground/80 hover:text-foreground",
         ].join(" ")
       }
       end
