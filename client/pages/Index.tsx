@@ -186,10 +186,7 @@ export default function Index() {
                 {loading ? "Sending…" : "Send"}
               </GoldButton>
             </div>
-            <p className="mt-2 text-xs text-foreground/50">
-              Live chat connects to OpenAI via a secure server proxy when
-              configured.
-            </p>
+            <p className="mt-2 text-xs text-foreground/50">Live chat powered by Claude.</p>
           </div>
         </div>
       </section>
