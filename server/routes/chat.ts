@@ -13,7 +13,7 @@ const ANTHROPIC_KEY = process.env.ANTHROPIC_API_KEY;
 const ANTHROPIC_ENDPOINT = process.env.ANTHROPIC_URL_ENDPOINT || "https://api.anthropic.com/v1/messages";
 const ANTHROPIC_MODEL = process.env.ANTHROPIC_CLAUDE_MODEL || "claude-3-5-sonnet-20241022";
 const ANTHROPIC_VERSION = process.env.ANTHROPIC_VERSION || "2023-06-01";
-const MAX_TOKENS = Number(process.env.MAX_TOKENS || 1024);
+const MAX_TOKENS = Math.min(Number(process.env.MAX_TOKENS || 1024), 4096);
 
 const systemMessage: ChatMessage = {
   role: "system",
