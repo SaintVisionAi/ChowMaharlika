@@ -52,10 +52,10 @@ export default function Footer() {
               <Instagram className="h-4 w-4" /> Instagram
             </a>
             <div className="inline-flex items-center gap-2 text-foreground/70">
-              <Phone className="h-4 w-4" /> (###) ###-####
+              <Phone className="h-4 w-4" /> 661-206-8619
             </div>
             <div className="inline-flex items-center gap-2 text-foreground/70">
-              <Mail className="h-4 w-4" /> hello@chowmaharika.com
+              <Mail className="h-4 w-4" /> support@chowmaharlika.com
             </div>
           </div>
         </div>
