@@ -27,8 +27,14 @@ export default function Header() {
     <header className="sticky top-0 z-50 border-b border-border/60 bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center justify-between gap-4">
         <Link to="/" className="flex items-center gap-2">
-          <span className="inline-flex h-9 w-9 items-center justify-center rounded-md bg-gradient-to-br from-[hsl(var(--gold-600))] to-[hsl(var(--gold-400))] text-[hsl(var(--charcoal-900))] shadow-[0_0_0_1px_hsl(var(--gold-500))]">
-            <Crown className="h-5 w-5" />
+          <span className="inline-flex h-9 w-9 items-center justify-center overflow-hidden rounded-md ring-1 ring-[hsl(var(--gold-600))]/70 bg-[hsl(var(--charcoal-800))]">
+            <img
+              src="https://cdn.builder.io/api/v1/image/assets%2F20e5d38115c54f2586198244c4136d74%2Fe140a3c475bc4486b279c44c63f83fa9?format=webp&width=128"
+              alt="Maharlika logo"
+              className="h-9 w-9 object-contain"
+              loading="eager"
+              decoding="async"
+            />
           </span>
           <div className="leading-tight">
             <div className="font-brand text-lg tracking-wide text-foreground">
