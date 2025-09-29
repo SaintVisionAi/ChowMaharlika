@@ -13,16 +13,23 @@ function formatPrice(cents: number | null) {
 }
 
 export default function Shop() {
-  const { data, isLoading, isError, refetch } = useQuery<CloverCatalogResponse>(
-    {
-      queryKey: ["clover", "catalog"],
-      queryFn: async () => {
-        const r = await fetch("/api/clover/catalog");
-        if (!r.ok) throw new Error(await r.text());
-        return (await r.json()) as CloverCatalogResponse;
-      },
+  const ecomm = useQuery<{ url: string | null; enabled: boolean }>({
+    queryKey: ["ecomm", "config"],
+    queryFn: async () => {
+      const r = await fetch("/api/ecommerce/config");
+      if (!r.ok) throw new Error(await r.text());
+      return (await r.json()) as { url: string | null; enabled: boolean };
     },
-  );
+  });
+  const { data, isLoading, isError, refetch } = useQuery<CloverCatalogResponse>({
+    queryKey: ["clover", "catalog"],
+    enabled: !ecomm.data?.enabled,
+    queryFn: async () => {
+      const r = await fetch("/api/clover/catalog");
+      if (!r.ok) throw new Error(await r.text());
+      return (await r.json()) as CloverCatalogResponse;
+    },
+  });
 
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState<string>("all");
@@ -52,6 +59,15 @@ export default function Shop() {
         a.name.localeCompare(b.name),
     );
   }, [data, query, category]);
+
+  if (ecomm.data?.enabled && ecomm.data.url) {
+    return (
+      <main className="container py-10">
+        <h1 className="font-brand text-3xl">Shop</h1>
+        <iframe src={ecomm.data.url} className="mt-4 h-[80vh] w-full rounded-md border border-border/60" />
+      </main>
+    );
+  }
 
   return (
     <main className="container py-10">
