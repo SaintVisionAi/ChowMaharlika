@@ -61,10 +61,13 @@ export default function Shop() {
   }, [data, query, category]);
 
   if (ecomm.data?.enabled && ecomm.data.url) {
+    if (typeof window !== "undefined") {
+      window.location.href = ecomm.data.url;
+    }
     return (
       <main className="container py-10">
         <h1 className="font-brand text-3xl">Shop</h1>
-        <iframe src={ecomm.data.url} className="mt-4 h-[80vh] w-full rounded-md border border-border/60" />
+        <p className="mt-4 text-sm text-foreground/70">Redirecting to our Clover online store…</p>
       </main>
     );
   }
