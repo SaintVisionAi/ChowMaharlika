@@ -11,6 +11,7 @@ import {
   getItemImages,
 } from "./routes/clover";
 import { chatHandler } from "./routes/chat";
+import { getEcommConfig } from "./routes/ecomm";
 
 export function createServer() {
   const app = express();
