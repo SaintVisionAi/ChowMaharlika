@@ -37,7 +37,10 @@ export function createServer() {
   app.get("/api/clover/stock", listStock);
   app.get("/api/clover/item/:id/images", getItemImages);
 
-  // OpenAI chat proxy
+  // eCommerce config (for iframe or client use)
+  app.get("/api/ecommerce/config", getEcommConfig);
+
+  // OpenAI/Claude chat proxy
   app.post("/api/chat", chatHandler);
 
   return app;
