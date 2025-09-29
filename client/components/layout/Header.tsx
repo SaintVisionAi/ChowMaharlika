@@ -62,6 +62,8 @@ export default function Header() {
         <div className="flex items-center gap-3">
           <a
             href="https://chowmaharlika.cloveronline.com"
+            target="_blank"
+            rel="noopener"
             className="hidden md:inline-flex items-center gap-2 rounded-md border border-[hsl(var(--gold-600))]/60 bg-gradient-to-b from-[hsl(var(--gold-500))] to-[hsl(var(--gold-600))] px-4 py-2 text-sm font-semibold text-[hsl(var(--charcoal-900))] shadow-glow-gold transition hover:brightness-110"
           >
             <ShoppingCart className="h-4 w-4" /> Shop
