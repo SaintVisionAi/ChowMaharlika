@@ -23,9 +23,9 @@ export default function Footer() {
         <div>
           <div className="text-sm font-semibold text-foreground/80">Links</div>
           <nav className="mt-3 grid gap-2 text-sm">
-            <Link to="/shop" className="hover:text-primary">
+            <a href="https://chowmaharlika.cloveronline.com" className="hover:text-primary">
               Shop
-            </Link>
+            </a>
             <Link to="/delivery" className="hover:text-primary">
               Delivery
             </Link>
