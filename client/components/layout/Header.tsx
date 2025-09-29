@@ -83,6 +83,8 @@ export default function Header() {
           <div className="container grid gap-1 py-2">
             <a
               href="https://chowmaharlika.cloveronline.com"
+              target="_blank"
+              rel="noopener"
               className="px-3 py-2 rounded-md text-sm font-medium text-foreground/80 hover:text-foreground"
             >
               Shop
