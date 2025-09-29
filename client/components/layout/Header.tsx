@@ -47,7 +47,7 @@ export default function Header() {
         </Link>
 
         <nav className="hidden md:flex items-center gap-1">
-          <NavItem to="/shop" label="Shop" />
+          <a href="https://chowmaharlika.cloveronline.com" className="px-3 py-2 rounded-md text-sm font-medium text-foreground/80 hover:text-foreground">Shop</a>
           <NavItem to="/delivery" label="Delivery" />
           <NavItem to="/rewards" label="Rewards" />
           <NavItem to="/inventory" label="Inventory" />
@@ -55,12 +55,12 @@ export default function Header() {
         </nav>
 
         <div className="flex items-center gap-3">
-          <Link
-            to="/shop"
+          <a
+            href="https://chowmaharlika.cloveronline.com"
             className="hidden md:inline-flex items-center gap-2 rounded-md border border-[hsl(var(--gold-600))]/60 bg-gradient-to-b from-[hsl(var(--gold-500))] to-[hsl(var(--gold-600))] px-4 py-2 text-sm font-semibold text-[hsl(var(--charcoal-900))] shadow-glow-gold transition hover:brightness-110"
           >
             <ShoppingCart className="h-4 w-4" /> Shop
-          </Link>
+          </a>
           <button
             className="md:hidden inline-flex h-9 w-9 items-center justify-center rounded-md border border-border/60 text-foreground"
             onClick={() => setOpen((v) => !v)}
@@ -74,7 +74,7 @@ export default function Header() {
       {open && (
         <div className="md:hidden border-t border-border/60 bg-background">
           <div className="container grid gap-1 py-2">
-            <NavItem to="/shop" label="Shop" />
+            <a href="https://chowmaharlika.cloveronline.com" className="px-3 py-2 rounded-md text-sm font-medium text-foreground/80 hover:text-foreground">Shop</a>
             <NavItem to="/delivery" label="Delivery" />
             <NavItem to="/rewards" label="Rewards" />
             <NavItem to="/inventory" label="Inventory" />
