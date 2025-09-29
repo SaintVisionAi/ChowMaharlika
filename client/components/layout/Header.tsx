@@ -47,7 +47,12 @@ export default function Header() {
         </Link>
 
         <nav className="hidden md:flex items-center gap-1">
-          <a href="https://chowmaharlika.cloveronline.com" className="px-3 py-2 rounded-md text-sm font-medium text-foreground/80 hover:text-foreground">Shop</a>
+          <a
+            href="https://chowmaharlika.cloveronline.com"
+            className="px-3 py-2 rounded-md text-sm font-medium text-foreground/80 hover:text-foreground"
+          >
+            Shop
+          </a>
           <NavItem to="/delivery" label="Delivery" />
           <NavItem to="/rewards" label="Rewards" />
           <NavItem to="/inventory" label="Inventory" />
@@ -74,7 +79,12 @@ export default function Header() {
       {open && (
         <div className="md:hidden border-t border-border/60 bg-background">
           <div className="container grid gap-1 py-2">
-            <a href="https://chowmaharlika.cloveronline.com" className="px-3 py-2 rounded-md text-sm font-medium text-foreground/80 hover:text-foreground">Shop</a>
+            <a
+              href="https://chowmaharlika.cloveronline.com"
+              className="px-3 py-2 rounded-md text-sm font-medium text-foreground/80 hover:text-foreground"
+            >
+              Shop
+            </a>
             <NavItem to="/delivery" label="Delivery" />
             <NavItem to="/rewards" label="Rewards" />
             <NavItem to="/inventory" label="Inventory" />

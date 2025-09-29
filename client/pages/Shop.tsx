@@ -21,15 +21,17 @@ export default function Shop() {
       return (await r.json()) as { url: string | null; enabled: boolean };
     },
   });
-  const { data, isLoading, isError, refetch } = useQuery<CloverCatalogResponse>({
-    queryKey: ["clover", "catalog"],
-    enabled: !ecomm.data?.enabled,
-    queryFn: async () => {
-      const r = await fetch("/api/clover/catalog");
-      if (!r.ok) throw new Error(await r.text());
-      return (await r.json()) as CloverCatalogResponse;
+  const { data, isLoading, isError, refetch } = useQuery<CloverCatalogResponse>(
+    {
+      queryKey: ["clover", "catalog"],
+      enabled: !ecomm.data?.enabled,
+      queryFn: async () => {
+        const r = await fetch("/api/clover/catalog");
+        if (!r.ok) throw new Error(await r.text());
+        return (await r.json()) as CloverCatalogResponse;
+      },
     },
-  });
+  );
 
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState<string>("all");
@@ -67,7 +69,9 @@ export default function Shop() {
     return (
       <main className="container py-10">
         <h1 className="font-brand text-3xl">Shop</h1>
-        <p className="mt-4 text-sm text-foreground/70">Redirecting to our Clover online store…</p>
+        <p className="mt-4 text-sm text-foreground/70">
+          Redirecting to our Clover online store…
+        </p>
       </main>
     );
   }

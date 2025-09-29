@@ -14,7 +14,9 @@ export default function Footer() {
               loading="lazy"
               decoding="async"
             />
-            <div className="font-brand text-xl">Maharlika Seafood Mart & Chow</div>
+            <div className="font-brand text-xl">
+              Maharlika Seafood Mart & Chow
+            </div>
           </div>
           <p className="mt-2 text-sm text-foreground/70">
             Fresh seafood, Asian grocery, and hot meals. Powered by Clover.
@@ -23,7 +25,10 @@ export default function Footer() {
         <div>
           <div className="text-sm font-semibold text-foreground/80">Links</div>
           <nav className="mt-3 grid gap-2 text-sm">
-            <a href="https://chowmaharlika.cloveronline.com" className="hover:text-primary">
+            <a
+              href="https://chowmaharlika.cloveronline.com"
+              className="hover:text-primary"
+            >
               Shop
             </a>
             <Link to="/delivery" className="hover:text-primary">
