@@ -27,6 +27,8 @@ export default function Footer() {
           <nav className="mt-3 grid gap-2 text-sm">
             <a
               href="https://chowmaharlika.cloveronline.com"
+              target="_blank"
+              rel="noopener"
               className="hover:text-primary"
             >
               Shop
