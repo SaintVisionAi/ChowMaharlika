@@ -51,11 +51,9 @@ export function CartProvider({ children }: { children: ReactNode }) {
         setItems(data || [])
       } else {
         // Load from localStorage for guest users
-        if (typeof window !== "undefined") {
-          const localCart = localStorage.getItem("cart")
-          if (localCart) {
-            setItems(JSON.parse(localCart))
-          }
+        const localCart = localStorage.getItem("cart")
+        if (localCart) {
+          setItems(JSON.parse(localCart))
         }
       }
     } catch (error) {
@@ -92,12 +90,10 @@ export function CartProvider({ children }: { children: ReactNode }) {
         }
       } else {
         // Guest cart in localStorage
-        if (typeof window !== "undefined") {
-          const newItem = { ...product, id: Date.now().toString() }
-          const updatedItems = [...items, newItem]
-          setItems(updatedItems)
-          localStorage.setItem("cart", JSON.stringify(updatedItems))
-        }
+        const newItem = { ...product, id: Date.now().toString() }
+        const updatedItems = [...items, newItem]
+        setItems(updatedItems)
+        localStorage.setItem("cart", JSON.stringify(updatedItems))
       }
 
       toast({
@@ -128,9 +124,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
       const updatedItems = items.filter((item) => item.id !== itemId)
       setItems(updatedItems)
-      if (typeof window !== "undefined") {
-        localStorage.setItem("cart", JSON.stringify(updatedItems))
-      }
+      localStorage.setItem("cart", JSON.stringify(updatedItems))
 
       toast({
         title: "Removed from cart",
@@ -165,9 +159,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
       const updatedItems = items.map((item) => (item.id === itemId ? { ...item, quantity } : item))
       setItems(updatedItems)
-      if (typeof window !== "undefined") {
-        localStorage.setItem("cart", JSON.stringify(updatedItems))
-      }
+      localStorage.setItem("cart", JSON.stringify(updatedItems))
     } catch (error) {
       console.error("Error updating quantity:", error)
       toast({
@@ -191,9 +183,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
       }
 
       setItems([])
-      if (typeof window !== "undefined") {
-        localStorage.removeItem("cart")
-      }
+      localStorage.removeItem("cart")
     } catch (error) {
       console.error("Error clearing cart:", error)
     }
