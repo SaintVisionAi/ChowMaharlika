@@ -30,9 +30,7 @@ export default function SignUpPage() {
     try {
       const redirectUrl =
         process.env.NEXT_PUBLIC_DEV_SUPABASE_REDIRECT_URL ||
-        (typeof window !== "undefined"
-          ? `${window.location.origin}/account`
-          : `${process.env.NEXT_PUBLIC_APP_URL}/account`)
+        `${process.env.NEXT_PUBLIC_APP_URL || (typeof window !== "undefined" ? window.location.origin : "")}/account`
 
       const { error } = await supabase.auth.signUp({
         email,
