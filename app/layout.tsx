@@ -1,13 +1,9 @@
 import type React from "react"
-import { Geist, Playfair_Display } from "next/font/google"
+import { GeistSans } from "geist/font/sans"
+import { Playfair_Display } from "next/font/google"
 import "./globals.css"
 import { CartProvider } from "@/lib/cart-context"
 import { Toaster } from "@/components/ui/toaster"
-
-const geist = Geist({
-  subsets: ["latin"],
-  variable: "--font-geist",
-})
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -26,7 +22,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className={`${geist.variable} ${playfair.variable} antialiased`}>
+    <html lang="en" className={`${GeistSans.variable} ${playfair.variable} antialiased`}>
       <body className="min-h-screen bg-background text-foreground water-texture">
         <CartProvider>
           {children}
