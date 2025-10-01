@@ -220,3 +220,58 @@
     @apply bg-background text-foreground font-sans antialiased;
   }
 }
+
+/* Mobile Optimization */
+@media (max-width: 768px) {
+  /* Touch-optimized buttons */
+  button, a {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Larger tap targets */
+  .btn-press:active {
+    transform: scale(0.95);
+  }
+
+  /* Optimize font sizes for mobile */
+  h1 {
+    font-size: clamp(2rem, 8vw, 4rem);
+  }
+
+  h2 {
+    font-size: clamp(1.5rem, 6vw, 3rem);
+  }
+
+  /* Mobile-friendly spacing */
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  /* Smooth scroll for mobile */
+  html {
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Hide scrollbar but keep functionality */
+  .scrollbar-thin {
+    scrollbar-width: none;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Reduce animations on mobile for performance */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
