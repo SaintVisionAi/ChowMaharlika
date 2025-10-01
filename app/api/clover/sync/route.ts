@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server"
 import { createClient } from "@/lib/supabase/server"
-import { fetchCloverInventory } from "@/lib/clover"
 
 export async function POST() {
   try {
@@ -21,62 +20,41 @@ export async function POST() {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 })
     }
 
-    console.log("[v0] Starting Clover inventory sync...")
+    console.log("[v0] Starting Clover inventory sync via Supabase Edge Function...")
 
-    // Fetch inventory from Clover
-    const cloverItems = await fetchCloverInventory()
+    // Get user's access token for the edge function
+    const { data: { session } } = await supabase.auth.getSession()
+    const accessToken = session?.access_token
 
-    console.log("[v0] Fetched", cloverItems.length, "items from Clover")
-
-    let syncedCount = 0
-    let errorCount = 0
-
-    // Sync each item to Supabase
-    for (const item of cloverItems) {
-      try {
-        // Check if product already exists
-        const { data: existingProduct } = await supabase.from("products").select("id").eq("clover_id", item.id).single()
-
-        const productData = {
-          name: item.name,
-          description: item.description || "",
-          price: item.price / 100, // Convert from cents
-          category: item.categories?.[0]?.name?.toLowerCase() || "grocery",
-          stock_quantity: item.stockCount || 0,
-          clover_id: item.id,
-          is_available: true,
-          last_synced_at: new Date().toISOString(),
-        }
-
-        if (existingProduct) {
-          // Update existing product
-          const { error } = await supabase.from("products").update(productData).eq("id", existingProduct.id)
-          if (error) throw error
-          console.log("[v0] Updated product:", item.name)
-        } else {
-          // Insert new product
-          const { error } = await supabase.from("products").insert(productData)
-          if (error) throw error
-          console.log("[v0] Created new product:", item.name)
-        }
-
-        syncedCount++
-      } catch (error) {
-        console.error(`[v0] Error syncing item ${item.id}:`, error)
-        errorCount++
-      }
+    if (!accessToken) {
+      return NextResponse.json({ error: "No valid session" }, { status: 401 })
     }
 
-    console.log("[v0] Sync complete:", syncedCount, "synced,", errorCount, "errors")
+    // Call the Supabase Edge Function for Clover sync
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
+    const edgeFunctionResponse = await fetch(
+      `${supabaseUrl}/functions/v1/clover-sync`,
+      {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${accessToken}`,
+          'Content-Type': 'application/json',
+        },
+      }
+    )
 
-    return NextResponse.json({
-      success: true,
-      message: `Synced ${syncedCount} items from Clover`,
-      syncedCount,
-      errorCount,
-    })
+    if (!edgeFunctionResponse.ok) {
+      const errorText = await edgeFunctionResponse.text()
+      console.error("[v0] Edge function error:", errorText)
+      throw new Error(`Edge function failed: ${edgeFunctionResponse.status}`)
+    }
+
+    const result = await edgeFunctionResponse.json()
+    console.log("[v0] Edge function result:", result)
+
+    return NextResponse.json(result)
   } catch (error) {
-    console.error("[v0] Error syncing Clover inventory:", error)
+    console.error("[v0] Error calling Clover sync edge function:", error)
     return NextResponse.json(
       {
         error: error instanceof Error ? error.message : "Failed to sync inventory",

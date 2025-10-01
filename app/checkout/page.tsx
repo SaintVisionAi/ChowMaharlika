@@ -103,33 +103,73 @@ export default function CheckoutPage() {
 
       if (itemsError) throw itemsError
 
-      try {
-        const cloverResponse = await fetch("/api/clover/orders", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ orderId: order.id }),
-        })
+      // Handle payment method
+      if (formData.paymentMethod === "clover") {
+        // Redirect to Clover's secure payment page
+        try {
+          const paymentResponse = await fetch("/api/clover/payment", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ orderId: order.id }),
+          })
 
-        if (!cloverResponse.ok) {
-          console.error("Failed to sync order with Clover")
-          // Don't fail the entire order if Clover sync fails
+          if (!paymentResponse.ok) {
+            throw new Error("Failed to create payment URL")
+          }
+
+          const { paymentUrl } = await paymentResponse.json()
+          
+          // Clear cart before redirecting to payment
+          await clearCart()
+          
+          // Redirect to Clover's secure payment page
+          if (typeof window !== 'undefined') {
+            window.location.href = paymentUrl
+          }
+          return
+        } catch (paymentError) {
+          console.error("Error creating payment URL:", paymentError)
+          toast({
+            title: "Payment Error",
+            description: "Failed to redirect to payment. Please try again.",
+            variant: "destructive",
+          })
+          return
         }
-      } catch (cloverError) {
-        console.error("Error syncing with Clover:", cloverError)
-        // Continue with order completion even if Clover sync fails
       }
 
-      // Clear cart and redirect to success page
-      await clearCart()
+      // For cash payments, sync with Clover POS system
+      if (formData.paymentMethod === "cash") {
+        try {
+          const cloverResponse = await fetch("/api/clover/orders", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ orderId: order.id }),
+          })
 
-      toast({
-        title: "Order placed successfully!",
-        description: "You will receive a confirmation email shortly.",
-      })
+          if (!cloverResponse.ok) {
+            console.error("Failed to sync order with Clover")
+            // Don't fail the entire order if Clover sync fails
+          }
+        } catch (cloverError) {
+          console.error("Error syncing with Clover:", cloverError)
+          // Continue with order completion even if Clover sync fails
+        }
 
-      router.push(`/orders/${order.id}`)
+        // Clear cart and redirect to success page
+        await clearCart()
+
+        toast({
+          title: "Order placed successfully!",
+          description: "You will receive a confirmation email shortly.",
+        })
+
+        router.push(`/orders/${order.id}`)
+      }
     } catch (error) {
       console.error("Error placing order:", error)
       toast({
