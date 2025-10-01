@@ -75,9 +75,9 @@ export function PremiumProductCard({ product, onViewDetails, className }: Premiu
   return (
     <Card 
       className={cn(
-        "group relative overflow-hidden border-0 bg-gradient-to-b from-white/80 to-white/60 backdrop-blur-sm",
-        "hover:shadow-2xl hover:shadow-primary/20 transition-all duration-700 ease-out",
-        "hover:scale-[1.02] hover:-translate-y-1",
+        "group relative overflow-hidden border border-zinc-800/50 bg-gradient-to-b from-zinc-900/90 to-black/90 backdrop-blur-sm",
+        "hover:shadow-2xl hover:shadow-yellow-500/20 transition-all duration-500 ease-out hover-lift",
+        "hover:border-yellow-500/50",
         className
       )}
       onMouseEnter={() => setIsHovered(true)}
@@ -85,20 +85,20 @@ export function PremiumProductCard({ product, onViewDetails, className }: Premiu
     >
       {/* Premium Badge */}
       {product.category === 'seafood' && (
-        <Badge className="absolute top-4 left-4 z-20 bg-primary/90 backdrop-blur-sm text-white border-0 font-medium tracking-wide">
-          Premium Fresh
+        <Badge className="absolute top-4 left-4 z-20 bg-gradient-to-r from-yellow-500 to-yellow-600 backdrop-blur-sm text-gray-900 border-0 font-bold tracking-wide shadow-lg">
+          ✨ Premium
         </Badge>
       )}
 
       {/* Stock Status */}
       {product.stock_quantity < 10 && product.stock_quantity > 0 && (
-        <Badge className="absolute top-4 right-4 z-20 bg-amber-500/90 backdrop-blur-sm text-white border-0">
+        <Badge className="absolute top-4 right-4 z-20 bg-yellow-500/90 backdrop-blur-sm text-gray-900 border-0 font-semibold">
           {product.stock_quantity} left
         </Badge>
       )}
 
       {product.stock_quantity === 0 && (
-        <Badge className="absolute top-4 right-4 z-20 bg-red-500/90 backdrop-blur-sm text-white border-0">
+        <Badge className="absolute top-4 right-4 z-20 bg-red-500/90 backdrop-blur-sm text-white border-0 font-semibold">
           Sold Out
         </Badge>
       )}
@@ -108,10 +108,10 @@ export function PremiumProductCard({ product, onViewDetails, className }: Premiu
         variant="ghost"
         size="sm"
         className={cn(
-          "absolute top-4 right-16 z-20 w-10 h-10 rounded-full bg-white/80 backdrop-blur-sm",
+          "absolute top-4 right-16 z-20 w-10 h-10 rounded-full bg-zinc-800/80 backdrop-blur-sm text-gray-400",
           "opacity-0 group-hover:opacity-100 transition-all duration-300",
-          "hover:bg-white hover:scale-110",
-          isFavorited && "opacity-100 bg-red-50 text-red-500"
+          "hover:bg-zinc-700 hover:text-yellow-400 hover:scale-110",
+          isFavorited && "opacity-100 bg-yellow-500/20 text-yellow-400"
         )}
         onClick={() => setIsFavorited(!isFavorited)}
       >
@@ -119,20 +119,21 @@ export function PremiumProductCard({ product, onViewDetails, className }: Premiu
       </Button>
 
       {/* Product Image */}
-      <div className="aspect-[4/3] relative overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100">
+      <div className="aspect-[4/3] relative overflow-hidden bg-gradient-to-br from-zinc-900 to-black">
         <Image
           src={product.image_url || `/api/placeholder/400/300?text=${encodeURIComponent(product.name)}`}
           alt={product.name}
           fill
           className={cn(
             "object-cover transition-all duration-700 ease-out",
-            isHovered && "scale-110"
+            isHovered && "scale-110 brightness-110"
           )}
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          unoptimized
         />
         
         {/* Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
         
         {/* Quick Actions */}
         <div className={cn(
@@ -143,7 +144,7 @@ export function PremiumProductCard({ product, onViewDetails, className }: Premiu
           <Button
             variant="secondary"
             size="sm"
-            className="flex-1 bg-white/90 backdrop-blur-sm hover:bg-white text-gray-900 border-0"
+            className="flex-1 bg-yellow-500 backdrop-blur-sm hover:bg-yellow-400 text-gray-900 font-semibold border-0 shadow-lg"
             onClick={() => onViewDetails?.(product)}
           >
             <Eye className="w-4 h-4 mr-2" />
@@ -155,14 +156,14 @@ export function PremiumProductCard({ product, onViewDetails, className }: Premiu
       <CardContent className="p-6 space-y-4">
         {/* Origin/Source */}
         {product.origin && (
-          <div className="text-xs font-medium text-primary/70 tracking-wider uppercase">
+          <div className="text-xs font-bold text-yellow-400 tracking-wider uppercase">
             {product.origin}
           </div>
         )}
 
         {/* Product Name */}
         <div>
-          <h3 className="font-semibold text-xl text-gray-900 leading-tight line-clamp-2 mb-2">
+          <h3 className="font-bold text-xl text-white leading-tight line-clamp-2 mb-2">
             {product.name}
           </h3>
           
@@ -170,13 +171,13 @@ export function PremiumProductCard({ product, onViewDetails, className }: Premiu
           {product.rating && (
             <div className="flex items-center gap-1 mb-2">
               {renderStars(product.rating)}
-              <span className="text-sm text-gray-600 ml-1">({product.rating})</span>
+              <span className="text-sm text-gray-400 ml-1">({product.rating})</span>
             </div>
           )}
         </div>
 
         {/* Description */}
-        <p className="text-sm text-gray-600 leading-relaxed line-clamp-3 min-h-[3rem]">
+        <p className="text-sm text-gray-400 leading-relaxed line-clamp-3 min-h-[3rem]">
           {product.description}
         </p>
 
@@ -186,7 +187,7 @@ export function PremiumProductCard({ product, onViewDetails, className }: Premiu
             {product.tags.slice(0, 3).map((tag, index) => (
               <span
                 key={index}
-                className="inline-block px-2 py-1 text-xs bg-gray-100 text-gray-600 rounded-full"
+                className="inline-block px-2 py-1 text-xs bg-yellow-500/10 text-yellow-400 rounded-full border border-yellow-500/20"
               >
                 {tag}
               </span>
@@ -197,11 +198,11 @@ export function PremiumProductCard({ product, onViewDetails, className }: Premiu
         {/* Pricing */}
         <div className="flex items-baseline justify-between">
           <div className="flex items-baseline gap-2">
-            <span className="text-2xl font-bold text-gray-900">
+            <span className="text-3xl font-bold gold-glow">
               ${product.price.toFixed(2)}
             </span>
             <span className="text-sm text-gray-500">
-              per {product.unit}
+              / {product.unit}
             </span>
           </div>
         </div>
@@ -209,10 +210,11 @@ export function PremiumProductCard({ product, onViewDetails, className }: Premiu
         {/* Add to Cart Button */}
         <Button
           className={cn(
-            "w-full h-12 font-medium tracking-wide transition-all duration-300",
-            "bg-primary hover:bg-primary/90",
-            "hover:shadow-lg hover:shadow-primary/25",
-            "disabled:opacity-50 disabled:cursor-not-allowed",
+            "w-full h-12 font-bold tracking-wide transition-all duration-300 btn-press",
+            "bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600",
+            "hover:from-yellow-300 hover:via-yellow-400 hover:to-yellow-500",
+            "text-gray-900 shadow-lg hover:shadow-xl hover:shadow-yellow-500/50",
+            "disabled:opacity-50 disabled:cursor-not-allowed disabled:from-gray-600 disabled:to-gray-700",
             isLoading && "pointer-events-none"
           )}
           onClick={handleAddToCart}
@@ -220,14 +222,14 @@ export function PremiumProductCard({ product, onViewDetails, className }: Premiu
         >
           {isLoading ? (
             <div className="flex items-center gap-2">
-              <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+              <div className="w-4 h-4 border-2 border-gray-900/30 border-t-gray-900 rounded-full animate-spin" />
               Adding...
             </div>
           ) : product.stock_quantity === 0 ? (
             "Sold Out"
           ) : (
             <div className="flex items-center gap-2">
-              <ShoppingCart className="w-4 h-4" />
+              <ShoppingCart className="w-5 h-5" />
               Add to Cart
             </div>
           )}
