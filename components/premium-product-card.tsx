@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge"
 import { useCart } from "@/lib/cart-context"
 import { Star, Heart, Eye, ShoppingCart } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { ProductImageFallback } from "@/components/product-image-fallback"
 
 interface Product {
   id: string
@@ -72,12 +73,14 @@ export function PremiumProductCard({ product, onViewDetails, className }: Premiu
     return stars
   }
 
+  const [imageError, setImageError] = useState(false)
+
   return (
     <Card 
       className={cn(
-        "group relative overflow-hidden border border-zinc-800/50 bg-gradient-to-b from-zinc-900/90 to-black/90 backdrop-blur-sm",
-        "hover:shadow-2xl hover:shadow-yellow-500/20 transition-all duration-500 ease-out hover-lift",
-        "hover:border-yellow-500/50",
+        "group relative overflow-hidden border-2 border-yellow-500/20 bg-gradient-to-b from-zinc-900 via-black to-zinc-900 backdrop-blur-sm",
+        "hover:shadow-2xl hover:shadow-yellow-500/40 transition-all duration-500 ease-out hover-lift",
+        "hover:border-yellow-500/60",
         className
       )}
       onMouseEnter={() => setIsHovered(true)}
@@ -120,17 +123,29 @@ export function PremiumProductCard({ product, onViewDetails, className }: Premiu
 
       {/* Product Image */}
       <div className="aspect-[4/3] relative overflow-hidden bg-gradient-to-br from-zinc-900 to-black">
-        <Image
-          src={product.image_url || `/api/placeholder/400/300?text=${encodeURIComponent(product.name)}`}
-          alt={product.name}
-          fill
-          className={cn(
-            "object-cover transition-all duration-700 ease-out",
-            isHovered && "scale-110 brightness-110"
-          )}
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          unoptimized
-        />
+        {product.image_url && !imageError ? (
+          <Image
+            src={product.image_url}
+            alt={product.name}
+            fill
+            className={cn(
+              "object-cover transition-all duration-700 ease-out",
+              isHovered && "scale-110 brightness-110"
+            )}
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            unoptimized
+            onError={() => setImageError(true)}
+          />
+        ) : (
+          <ProductImageFallback 
+            productName={product.name} 
+            category={product.category}
+            className={cn(
+              "transition-all duration-700 ease-out",
+              isHovered && "scale-110"
+            )}
+          />
+        )}
         
         {/* Gradient Overlay */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
@@ -171,13 +186,13 @@ export function PremiumProductCard({ product, onViewDetails, className }: Premiu
           {product.rating && (
             <div className="flex items-center gap-1 mb-2">
               {renderStars(product.rating)}
-              <span className="text-sm text-gray-400 ml-1">({product.rating})</span>
+              <span className="text-sm text-gray-300 ml-1">({product.rating.toFixed(1)})</span>
             </div>
           )}
         </div>
 
         {/* Description */}
-        <p className="text-sm text-gray-400 leading-relaxed line-clamp-3 min-h-[3rem]">
+        <p className="text-sm text-gray-300 leading-relaxed line-clamp-3 min-h-[3rem]">
           {product.description}
         </p>
 
@@ -201,7 +216,7 @@ export function PremiumProductCard({ product, onViewDetails, className }: Premiu
             <span className="text-3xl font-bold gold-glow">
               ${product.price.toFixed(2)}
             </span>
-            <span className="text-sm text-gray-500">
+            <span className="text-sm text-gray-400">
               / {product.unit}
             </span>
           </div>

@@ -39,9 +39,9 @@ export function HeroSection() {
           </h1>
 
           {/* Subheadline */}
-          <p className="text-xl md:text-2xl text-gray-400 max-w-3xl mx-auto leading-relaxed">
-            Enterprise-grade seafood and groceries with AI-powered personalized service.
-            <span className="block mt-2 text-yellow-400 font-medium">Fresh. Premium. Intelligent.</span>
+          <p className="text-xl md:text-2xl text-gray-200 max-w-3xl mx-auto leading-relaxed">
+            Hand-selected premium seafood delivered fresh daily. From wild-caught fish to sustainable shellfish, we bring the ocean's finest to your table.
+            <span className="block mt-2 text-yellow-400 font-semibold text-2xl">Fresh. Premium. Sustainable.</span>
           </p>
 
           {/* CTA Buttons */}
@@ -73,7 +73,7 @@ export function HeroSection() {
                 <Check className="w-8 h-8 text-yellow-400" />
               </div>
               <h3 className="text-lg font-bold text-white">Premium Quality</h3>
-              <p className="text-gray-400 text-sm leading-relaxed">Hand-selected fresh seafood and premium grocery items delivered daily</p>
+              <p className="text-gray-300 text-sm leading-relaxed">Hand-selected fresh seafood and premium grocery items delivered daily</p>
             </div>
 
             <div className="flex flex-col items-center text-center space-y-4 group">
@@ -83,7 +83,7 @@ export function HeroSection() {
                 </svg>
               </div>
               <h3 className="text-lg font-bold text-white">Fast Delivery</h3>
-              <p className="text-gray-400 text-sm leading-relaxed">Same-day delivery through GrubHub, DoorDash, and Uber Eats</p>
+              <p className="text-gray-300 text-sm leading-relaxed">Same-day delivery through GrubHub, DoorDash, and Uber Eats</p>
             </div>
 
             <div className="flex flex-col items-center text-center space-y-4 group">
@@ -91,7 +91,7 @@ export function HeroSection() {
                 <Sparkles className="w-8 h-8 text-yellow-400" />
               </div>
               <h3 className="text-lg font-bold text-white">AI-Powered</h3>
-              <p className="text-gray-400 text-sm leading-relaxed">SaintChow AI assistant for personalized recommendations 24/7</p>
+              <p className="text-gray-300 text-sm leading-relaxed">SaintAthena AI assistant for personalized recommendations 24/7</p>
             </div>
           </div>
 

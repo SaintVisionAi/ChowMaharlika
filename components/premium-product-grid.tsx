@@ -120,14 +120,14 @@ export function PremiumProductGrid({ products, title, subtitle }: PremiumProduct
     <div className="space-y-8">
       {/* Header Section */}
       {(title || subtitle) && (
-        <div className="text-center space-y-4">
+        <div className="text-center space-y-4 mb-8">
           {title && (
-            <h1 className="text-4xl md:text-5xl font-serif font-bold text-gray-900">
+            <h1 className="text-4xl md:text-5xl font-serif font-bold gold-shimmer">
               {title}
             </h1>
           )}
           {subtitle && (
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
+            <p className="text-lg text-gray-200 max-w-2xl mx-auto leading-relaxed">
               {subtitle}
             </p>
           )}
@@ -137,14 +137,14 @@ export function PremiumProductGrid({ products, title, subtitle }: PremiumProduct
       {/* Search and Filters */}
       <div className="space-y-4">
         {/* Search Bar */}
-        <div className="relative max-w-md mx-auto">
-          <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+        <div className="relative max-w-2xl mx-auto">
+          <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-yellow-400 w-5 h-5" />
           <Input
             type="text"
             placeholder="Search products..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-12 h-12 bg-white/80 backdrop-blur-sm border-gray-200"
+            className="pl-12 h-14 bg-zinc-900/90 backdrop-blur-sm border-2 border-yellow-500/30 focus:border-yellow-500 text-white placeholder:text-gray-400 rounded-xl"
           />
         </div>
 
@@ -155,7 +155,7 @@ export function PremiumProductGrid({ products, title, subtitle }: PremiumProduct
               variant="outline"
               size="sm"
               onClick={() => setShowFilters(!showFilters)}
-              className="bg-white/80 backdrop-blur-sm"
+              className="bg-zinc-900/90 backdrop-blur-sm border-yellow-500/30 hover:border-yellow-500 text-white"
             >
               <SlidersHorizontal className="w-4 h-4 mr-2" />
               Filters
@@ -164,7 +164,7 @@ export function PremiumProductGrid({ products, title, subtitle }: PremiumProduct
             {showFilters && (
               <div className="flex items-center gap-3">
                 <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-                  <SelectTrigger className="w-40 bg-white/80 backdrop-blur-sm">
+                  <SelectTrigger className="w-40 bg-zinc-900/90 backdrop-blur-sm border-yellow-500/30 text-white">
                     <SelectValue placeholder="Category" />
                   </SelectTrigger>
                   <SelectContent>
@@ -177,7 +177,7 @@ export function PremiumProductGrid({ products, title, subtitle }: PremiumProduct
                 </Select>
 
                 <Select value={sortBy} onValueChange={(value: SortOption) => setSortBy(value)}>
-                  <SelectTrigger className="w-40 bg-white/80 backdrop-blur-sm">
+                  <SelectTrigger className="w-40 bg-zinc-900/90 backdrop-blur-sm border-yellow-500/30 text-white">
                     <SelectValue placeholder="Sort by" />
                   </SelectTrigger>
                   <SelectContent>
@@ -193,17 +193,20 @@ export function PremiumProductGrid({ products, title, subtitle }: PremiumProduct
 
           <div className="flex items-center gap-2">
             {/* Results Count */}
-            <Badge variant="secondary" className="bg-primary/10 text-primary">
+            <Badge variant="secondary" className="bg-yellow-500/20 text-yellow-400 border-yellow-500/30 font-semibold">
               {filteredAndSortedProducts.length} {filteredAndSortedProducts.length === 1 ? 'product' : 'products'}
             </Badge>
 
             {/* View Mode Toggle */}
-            <div className="flex border border-gray-200 rounded-lg bg-white/80 backdrop-blur-sm">
+            <div className="flex border-2 border-yellow-500/30 rounded-lg bg-zinc-900/90 backdrop-blur-sm">
               <Button
                 variant={viewMode === "grid" ? "default" : "ghost"}
                 size="sm"
                 onClick={() => setViewMode("grid")}
-                className="rounded-r-none"
+                className={cn(
+                  "rounded-r-none",
+                  viewMode === "grid" && "bg-yellow-500 text-gray-900 hover:bg-yellow-400"
+                )}
               >
                 <Grid className="w-4 h-4" />
               </Button>
@@ -211,7 +214,10 @@ export function PremiumProductGrid({ products, title, subtitle }: PremiumProduct
                 variant={viewMode === "list" ? "default" : "ghost"}
                 size="sm"
                 onClick={() => setViewMode("list")}
-                className="rounded-l-none"
+                className={cn(
+                  "rounded-l-none",
+                  viewMode === "list" && "bg-yellow-500 text-gray-900 hover:bg-yellow-400"
+                )}
               >
                 <List className="w-4 h-4" />
               </Button>
@@ -223,17 +229,17 @@ export function PremiumProductGrid({ products, title, subtitle }: PremiumProduct
       {/* Products Grid */}
       {filteredAndSortedProducts.length === 0 ? (
         <div className="text-center py-16">
-          <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gray-100 flex items-center justify-center">
-            <Search className="w-8 h-8 text-gray-400" />
+          <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-yellow-500/10 border-2 border-yellow-500/30 flex items-center justify-center">
+            <Search className="w-10 h-10 text-yellow-400" />
           </div>
-          <p className="text-lg text-gray-600 mb-2">No products match your criteria</p>
-          <p className="text-sm text-gray-500">Try adjusting your search or filters</p>
+          <p className="text-xl text-white mb-2">No products match your criteria</p>
+          <p className="text-sm text-gray-400">Try adjusting your search or filters</p>
         </div>
       ) : (
         <div className={cn(
           "transition-all duration-500 ease-in-out",
           viewMode === "grid" 
-            ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"
+            ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10"
             : "space-y-6"
         )}>
           {filteredAndSortedProducts.map((product, index) => (

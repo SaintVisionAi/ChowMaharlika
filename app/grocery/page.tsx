@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/server"
 import { PremiumProductGrid } from "@/components/premium-product-grid"
+import { GroceryPageClient } from "@/components/grocery-page-client"
 
 export default async function GroceryPage() {
   const supabase = await createClient()
@@ -12,13 +13,9 @@ export default async function GroceryPage() {
     .order("name")
 
   return (
-    <div className="min-h-screen pt-24 pb-16">
-      <div className="container mx-auto px-4">
-        <PremiumProductGrid 
-          products={products || []} 
-          title="Premium Grocery"
-          subtitle="Curated selection of international and local grocery items. From Filipino favorites to Asian specialties, find everything you need for authentic home cooking."
-        />
+    <div className="min-h-screen pt-24 pb-16 bg-[#0f0f0f]">
+      <div className="container mx-auto px-4 space-y-12">
+        <GroceryPageClient products={products || []} />
       </div>
     </div>
   )
