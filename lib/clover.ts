@@ -23,6 +23,8 @@ export interface CloverProduct {
   description?: string
   categories?: { name: string }[]
   stockCount?: number
+  image?: { url: string }
+  images?: Array<{ url: string }>
 }
 
 export interface CloverOrder {
@@ -68,11 +70,14 @@ export async function fetchCloverItem(itemId: string): Promise<CloverProduct | n
   try {
     validateCloverConfig()
 
-    const response = await fetch(`${CLOVER_CONFIG.baseUrl}/merchants/${CLOVER_CONFIG.merchantId}/items/${itemId}`, {
-      headers: {
-        Authorization: `Bearer ${CLOVER_CONFIG.apiKey}`,
-      },
-    })
+    const response = await fetch(
+      `${CLOVER_CONFIG.baseUrl}/merchants/${CLOVER_CONFIG.merchantId}/items/${itemId}?expand=images`,
+      {
+        headers: {
+          Authorization: `Bearer ${CLOVER_CONFIG.apiKey}`,
+        },
+      }
+    )
 
     if (!response.ok) {
       throw new Error(`Clover API error: ${response.status}`)
@@ -81,6 +86,32 @@ export async function fetchCloverItem(itemId: string): Promise<CloverProduct | n
     return await response.json()
   } catch (error) {
     console.error("[v0] Error fetching Clover item:", error)
+    return null
+  }
+}
+
+export async function fetchCloverItemImage(itemId: string): Promise<string | null> {
+  try {
+    validateCloverConfig()
+
+    // Fetch item with images expanded
+    const item = await fetchCloverItem(itemId)
+    
+    if (!item) return null
+
+    // Check for image in the item
+    if (item.image?.url) {
+      return item.image.url
+    }
+
+    // Check for images array
+    if (item.images && item.images.length > 0) {
+      return item.images[0].url
+    }
+
+    return null
+  } catch (error) {
+    console.error("[v0] Error fetching Clover item image:", error)
     return null
   }
 }
