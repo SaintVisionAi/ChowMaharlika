@@ -8,6 +8,14 @@ export async function POST(request: Request) {
     const rawBody = await request.text()
     const signature = request.headers.get("x-clover-signature")
     
+    const webhookData = JSON.parse(rawBody)
+    
+    // Handle Clover webhook verification challenge
+    if (webhookData.verificationCode) {
+      console.log("[v0] Clover webhook verification code:", webhookData.verificationCode)
+      return NextResponse.json({ verificationCode: webhookData.verificationCode })
+    }
+    
     // Verify the webhook signature if signing secret is configured
     if (process.env.CLOVER_SIGNING_SECRET && signature) {
       const expectedSignature = crypto
@@ -21,7 +29,6 @@ export async function POST(request: Request) {
       }
     }
 
-    const webhookData = JSON.parse(rawBody)
     console.log("[v0] Received Clover webhook:", webhookData.type)
 
     const supabase = await createClient()
