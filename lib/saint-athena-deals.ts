@@ -373,7 +373,7 @@ export function getPersonalizedDeals(
 
   // Count category frequency in history
   userCartHistory.forEach((cat) => {
-    categoryFrequency.set(cat, (categoryFrequency.get(cat) || 0) + 1
+    categoryFrequency.set(cat, (categoryFrequency.get(cat) || 0) + 1)
   })
 
   // Get all deals
