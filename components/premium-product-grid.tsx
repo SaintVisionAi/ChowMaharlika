@@ -3,6 +3,7 @@
 import React, { useState, useMemo } from "react"
 import { PremiumProductCard } from "@/components/premium-product-card"
 import { ProductDetailModal } from "@/components/product-detail-modal"
+import { Pagination } from "@/components/pagination"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
@@ -41,6 +42,8 @@ export function PremiumProductGrid({ products, title, subtitle }: PremiumProduct
   const [viewMode, setViewMode] = useState<ViewMode>("grid")
   const [selectedCategory, setSelectedCategory] = useState<string>("all")
   const [showFilters, setShowFilters] = useState(false)
+  const [currentPage, setCurrentPage] = useState(1)
+  const ITEMS_PER_PAGE = 24 // Show 24 products per page (4x6 grid on desktop)
 
   // Enhanced products with mock data for demo
   const enhancedProducts = useMemo(() => {
@@ -89,6 +92,31 @@ export function PremiumProductGrid({ products, title, subtitle }: PremiumProduct
 
     return filtered
   }, [enhancedProducts, searchQuery, selectedCategory, sortBy])
+
+  // Paginate products
+  const paginatedProducts = useMemo(() => {
+    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE
+    const endIndex = startIndex + ITEMS_PER_PAGE
+    return filteredAndSortedProducts.slice(startIndex, endIndex)
+  }, [filteredAndSortedProducts, currentPage])
+
+  const totalPages = Math.ceil(filteredAndSortedProducts.length / ITEMS_PER_PAGE)
+
+  // Reset to page 1 when filters change
+  const handleSearchChange = (value: string) => {
+    setSearchQuery(value)
+    setCurrentPage(1)
+  }
+
+  const handleCategoryChange = (value: string) => {
+    setSelectedCategory(value)
+    setCurrentPage(1)
+  }
+
+  const handleSortChange = (value: SortOption) => {
+    setSortBy(value)
+    setCurrentPage(1)
+  }
 
   const handleViewDetails = (product: Product) => {
     setSelectedProduct(product)
@@ -143,7 +171,7 @@ export function PremiumProductGrid({ products, title, subtitle }: PremiumProduct
             type="text"
             placeholder="Search products..."
             value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
+            onChange={(e) => handleSearchChange(e.target.value)}
             className="pl-12 h-14 bg-zinc-900/90 backdrop-blur-sm border-2 border-yellow-500/30 focus:border-yellow-500 text-white placeholder:text-gray-400 rounded-xl"
           />
         </div>
@@ -163,7 +191,7 @@ export function PremiumProductGrid({ products, title, subtitle }: PremiumProduct
             
             {showFilters && (
               <div className="flex items-center gap-3">
-                <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+                <Select value={selectedCategory} onValueChange={handleCategoryChange}>
                   <SelectTrigger className="w-40 bg-zinc-900/90 backdrop-blur-sm border-yellow-500/30 text-white">
                     <SelectValue placeholder="Category" />
                   </SelectTrigger>
@@ -176,7 +204,7 @@ export function PremiumProductGrid({ products, title, subtitle }: PremiumProduct
                   </SelectContent>
                 </Select>
 
-                <Select value={sortBy} onValueChange={(value: SortOption) => setSortBy(value)}>
+                <Select value={sortBy} onValueChange={handleSortChange}>
                   <SelectTrigger className="w-40 bg-zinc-900/90 backdrop-blur-sm border-yellow-500/30 text-white">
                     <SelectValue placeholder="Sort by" />
                   </SelectTrigger>
@@ -236,29 +264,42 @@ export function PremiumProductGrid({ products, title, subtitle }: PremiumProduct
           <p className="text-sm text-gray-400">Try adjusting your search or filters</p>
         </div>
       ) : (
-        <div className={cn(
-          "transition-all duration-500 ease-in-out",
-          viewMode === "grid" 
-            ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10"
-            : "space-y-6"
-        )}>
-          {filteredAndSortedProducts.map((product, index) => (
-            <div
-              key={product.id}
-              className={cn(
-                "animate-fade-in-up opacity-0",
-                "animation-delay-" + (index % 8) // Stagger animation for first 8 items
-              )}
-              style={{ animationDelay: `${(index % 8) * 100}ms` }}
-            >
-              <PremiumProductCard
-                product={product}
-                onViewDetails={handleViewDetails}
-                className={viewMode === "list" ? "flex flex-row max-w-4xl" : ""}
-              />
-            </div>
-          ))}
-        </div>
+        <>
+          <div className={cn(
+            "transition-all duration-500 ease-in-out",
+            viewMode === "grid" 
+              ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8"
+              : "space-y-6"
+          )}>
+            {paginatedProducts.map((product, index) => (
+              <div
+                key={product.id}
+                className={cn(
+                  "animate-fade-in-up opacity-0",
+                  "animation-delay-" + (index % 8) // Stagger animation for first 8 items
+                )}
+                style={{ animationDelay: `${(index % 8) * 100}ms` }}
+              >
+                <PremiumProductCard
+                  product={product}
+                  onViewDetails={handleViewDetails}
+                  className={viewMode === "list" ? "flex flex-row max-w-4xl" : ""}
+                />
+              </div>
+            ))}
+          </div>
+
+          {/* Pagination */}
+          {totalPages > 1 && (
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={setCurrentPage}
+              itemsPerPage={ITEMS_PER_PAGE}
+              totalItems={filteredAndSortedProducts.length}
+            />
+          )}
+        </>
       )}
 
       {/* Product Detail Modal */}

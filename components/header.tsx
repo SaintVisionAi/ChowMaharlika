@@ -27,6 +27,9 @@ export function Header() {
 
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center space-x-8">
+            <Link href="/products" className="text-gray-300 hover:text-yellow-400 transition-all duration-200 font-medium text-sm tracking-wide">
+              All Products
+            </Link>
             <Link href="/seafood" className="text-gray-300 hover:text-yellow-400 transition-all duration-200 font-medium text-sm tracking-wide">
               Fresh Seafood
             </Link>
@@ -101,6 +104,9 @@ export function Header() {
         {isMenuOpen && (
           <nav className="lg:hidden mt-4 pb-4 border-t border-yellow-500/20 bg-black/20 backdrop-blur-sm rounded-b-lg">
             <div className="flex flex-col space-y-2 pt-4 px-2">
+              <Link href="/products" className="text-gray-300 hover:text-yellow-400 hover:bg-yellow-500/10 transition-all px-4 py-3 rounded-lg font-medium">
+                All Products
+              </Link>
               <Link href="/seafood" className="text-gray-300 hover:text-yellow-400 hover:bg-yellow-500/10 transition-all px-4 py-3 rounded-lg font-medium">
                 Fresh Seafood
               </Link>
