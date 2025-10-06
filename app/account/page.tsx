@@ -33,11 +33,11 @@ export default async function AccountPage() {
     .neq("status", "closed")
 
   return (
-    <div className="min-h-screen pt-24 pb-16">
+    <div className="min-h-screen pt-24 pb-16 bg-[#0f0f0f]">
       <div className="container mx-auto px-4 max-w-6xl">
         <div className="mb-8">
-          <h1 className="text-4xl font-serif font-bold text-primary mb-2">My Account</h1>
-          <p className="text-muted-foreground">Manage your profile, orders, and loyalty rewards</p>
+          <h1 className="text-4xl font-serif font-bold gold-shimmer mb-2">My Account</h1>
+          <p className="text-gray-300">Manage your profile, orders, and loyalty rewards</p>
         </div>
 
         <div className="grid lg:grid-cols-3 gap-6">

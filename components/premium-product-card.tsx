@@ -74,6 +74,9 @@ export function PremiumProductCard({ product, onViewDetails, className }: Premiu
   }
 
   const [imageError, setImageError] = useState(false)
+  
+  // Check if image_url is a placeholder
+  const isPlaceholder = product.image_url?.includes('placeholder') || !product.image_url
 
   return (
     <Card 
@@ -123,9 +126,9 @@ export function PremiumProductCard({ product, onViewDetails, className }: Premiu
 
       {/* Product Image */}
       <div className="aspect-[4/3] relative overflow-hidden bg-gradient-to-br from-zinc-900 to-black">
-        {product.image_url && !imageError ? (
+        {!isPlaceholder && !imageError ? (
           <Image
-            src={product.image_url}
+            src={product.image_url!}
             alt={product.name}
             fill
             className={cn(

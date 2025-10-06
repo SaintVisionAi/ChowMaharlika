@@ -7,6 +7,7 @@ import { Separator } from "@/components/ui/separator"
 import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
+import { ProductImageFallback } from "@/components/product-image-fallback"
 
 export default function CartPage() {
   const { items, removeItem, updateQuantity, total, itemCount, loading } = useCart()
@@ -24,10 +25,10 @@ export default function CartPage() {
 
   if (items.length === 0) {
     return (
-      <div className="min-h-screen pt-24 pb-16">
+      <div className="min-h-screen pt-24 pb-16 bg-[#0f0f0f]">
         <div className="container mx-auto px-4 max-w-2xl text-center">
-          <h1 className="text-4xl font-serif font-bold text-primary mb-4">Your Cart is Empty</h1>
-          <p className="text-muted-foreground mb-8">Start shopping to add items to your cart.</p>
+          <h1 className="text-4xl font-serif font-bold gold-shimmer mb-4">Your Cart is Empty</h1>
+          <p className="text-gray-300 mb-8">Start shopping to add items to your cart.</p>
           <div className="flex gap-4 justify-center">
             <Button asChild>
               <Link href="/seafood">Shop Seafood</Link>
@@ -42,9 +43,9 @@ export default function CartPage() {
   }
 
   return (
-    <div className="min-h-screen pt-24 pb-16">
+    <div className="min-h-screen pt-24 pb-16 bg-[#0f0f0f]">
       <div className="container mx-auto px-4 max-w-6xl">
-        <h1 className="text-4xl font-serif font-bold text-primary mb-8">Shopping Cart</h1>
+        <h1 className="text-4xl font-serif font-bold gold-shimmer mb-8">Shopping Cart</h1>
 
         <div className="grid lg:grid-cols-3 gap-8">
           {/* Cart Items */}
@@ -53,13 +54,22 @@ export default function CartPage() {
               <Card key={item.id}>
                 <CardContent className="p-6">
                   <div className="flex gap-4">
-                    <div className="w-24 h-24 relative bg-muted rounded-lg overflow-hidden flex-shrink-0">
-                      <Image
-                        src={item.image_url || "/placeholder.svg?height=96&width=96"}
-                        alt={item.name}
-                        fill
-                        className="object-cover"
-                      />
+                    <div className="w-24 h-24 relative bg-gradient-to-br from-zinc-900 to-black rounded-lg overflow-hidden flex-shrink-0">
+                      {item.image_url && !item.image_url.includes('placeholder') ? (
+                        <Image
+                          src={item.image_url}
+                          alt={item.name}
+                          fill
+                          className="object-cover"
+                          unoptimized
+                        />
+                      ) : (
+                        <ProductImageFallback 
+                          productName={item.name}
+                          category={item.category || 'default'}
+                          className="rounded-lg"
+                        />
+                      )}
                     </div>
                     <div className="flex-1">
                       <h3 className="font-semibold text-lg mb-1">{item.name}</h3>

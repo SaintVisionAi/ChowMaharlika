@@ -1,5 +1,5 @@
 import { createClient } from "@/lib/supabase/server"
-import { PremiumProductGrid } from "@/components/premium-product-grid"
+import { SeafoodPageClient } from "@/components/seafood-page-client"
 
 export default async function SeafoodPage() {
   const supabase = await createClient()
@@ -12,13 +12,9 @@ export default async function SeafoodPage() {
     .order("name")
 
   return (
-    <div className="min-h-screen pt-24 pb-16">
-      <div className="container mx-auto px-4">
-        <PremiumProductGrid 
-          products={products || []} 
-          title="Fresh Seafood"
-          subtitle="Hand-selected premium seafood delivered fresh daily. From wild-caught fish to sustainable shellfish, we bring the ocean's finest to your table."
-        />
+    <div className="min-h-screen pt-24 pb-16 bg-[#0f0f0f]">
+      <div className="container mx-auto px-4 space-y-12">
+        <SeafoodPageClient products={products || []} />
       </div>
     </div>
   )

@@ -188,9 +188,9 @@ export default function CheckoutPage() {
   }
 
   return (
-    <div className="min-h-screen pt-24 pb-16">
+    <div className="min-h-screen pt-24 pb-16 bg-[#0f0f0f]">
       <div className="container mx-auto px-4 max-w-6xl">
-        <h1 className="text-4xl font-serif font-bold text-primary mb-8">Checkout</h1>
+        <h1 className="text-4xl font-serif font-bold gold-shimmer mb-8">Checkout</h1>
 
         <form onSubmit={handleSubmit}>
           <div className="grid lg:grid-cols-3 gap-8">
