@@ -3,7 +3,6 @@
 import { useState } from "react"
 import { PremiumProductGrid } from "@/components/premium-product-grid"
 import { SaintAthenaIntro } from "@/components/saint-athena-intro"
-import { SaintAthena } from "@/components/saint-athena"
 
 interface Product {
   id: string
@@ -37,9 +36,6 @@ export function SeafoodPageClient({ products }: SeafoodPageClientProps) {
         title="Fresh Seafood"
         subtitle="Hand-selected premium seafood delivered fresh daily. From wild-caught fish to sustainable shellfish, we bring the ocean's finest to your table."
       />
-
-      {/* SaintAthena Chat System */}
-      <SaintAthena />
     </>
   )
 }

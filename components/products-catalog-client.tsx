@@ -6,7 +6,6 @@ import { ProductDetailModal } from "@/components/product-detail-modal"
 import { ProductFilters, FilterOptions } from "@/components/product-filters"
 import { Pagination } from "@/components/pagination"
 import { SaintAthenaIntro } from "@/components/saint-athena-intro"
-import { SaintAthena } from "@/components/saint-athena"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
@@ -366,9 +365,6 @@ export function ProductsCatalogClient({ products }: ProductsCatalogClientProps) 
         isOpen={isModalOpen}
         onClose={handleCloseModal}
       />
-
-      {/* SaintAthena Chat */}
-      <SaintAthena />
 
       <style jsx global>{`
         @keyframes fade-in-up {

@@ -3,7 +3,6 @@
 import { useState } from "react"
 import { PremiumProductGrid } from "@/components/premium-product-grid"
 import { SaintAthenaIntro } from "@/components/saint-athena-intro"
-import { SaintAthena } from "@/components/saint-athena"
 
 interface Product {
   id: string
@@ -37,9 +36,6 @@ export function GroceryPageClient({ products }: GroceryPageClientProps) {
         title="Premium Grocery"
         subtitle="Curated selection of international and local grocery items. From Filipino favorites to Asian specialties, find everything you need for authentic home cooking."
       />
-
-      {/* SaintAthena Chat System */}
-      <SaintAthena />
     </>
   )
 }
