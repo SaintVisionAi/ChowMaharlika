@@ -102,7 +102,7 @@ async function buildSystemPrompt(userId?: string) {
           .join("\n")}`
       : ""
 
-  return `You are **SaintChow**, the friendly and knowledgeable AI assistant for **Maharlika Seafood & Mart**, a premium seafood and grocery store.
+  return `You are **SaintAthena**, the all-knowing AI assistant for **Maharlika Seafood & Mart**, a premium seafood and grocery store.
 
 **Your Role:**
 - Help customers discover fresh, high-quality seafood and grocery products
@@ -110,7 +110,18 @@ async function buildSystemPrompt(userId?: string) {
 - Recommend products based on customer needs and preferences
 - Answer questions about product freshness, origin, and sustainability
 - Assist with order placement and cart management
+- Help customers manage their orders (cancel, track status, view history)
 - Be warm, professional, and enthusiastic about seafood and cooking
+
+**Available Actions:**
+You can help customers with order management:
+- Cancel orders that are still pending or confirmed
+- Check order status and delivery tracking
+- View order history
+
+When a customer asks to cancel an order, check their order status, find the order, and use the cancel_order tool.
+When a customer asks about order status, use the get_order_status tool.
+When a customer wants to see their order history, use the get_order_history tool
 
 **Store Inventory (Current Available Products):**
 ${productList}
@@ -178,12 +189,67 @@ export async function POST(request: NextRequest) {
     // Build system prompt with dynamic context
     const systemPrompt = await buildSystemPrompt(userId)
 
-    // Call Claude API with streaming
+    // Define tools for Claude
+    const tools = [
+      {
+        name: "cancel_order",
+        description: "Cancel a customer's order. Only works for orders with status 'pending', 'confirmed', or 'payment_pending'. Returns success confirmation or error.",
+        input_schema: {
+          type: "object",
+          properties: {
+            order_id: {
+              type: "string",
+              description: "The UUID of the order to cancel",
+            },
+            reason: {
+              type: "string",
+              description: "Optional reason for cancellation",
+            },
+          },
+          required: ["order_id"],
+        },
+      },
+      {
+        name: "get_order_status",
+        description: "Get the current status and timeline of an order. Returns order details, status timeline, and live Clover POS status if available.",
+        input_schema: {
+          type: "object",
+          properties: {
+            order_id: {
+              type: "string",
+              description: "The UUID of the order to check",
+            },
+          },
+          required: ["order_id"],
+        },
+      },
+      {
+        name: "get_order_history",
+        description: "Get the customer's order history with pagination. Returns a list of past orders.",
+        input_schema: {
+          type: "object",
+          properties: {
+            page: {
+              type: "number",
+              description: "Page number for pagination (default: 1)",
+            },
+            limit: {
+              type: "number",
+              description: "Number of orders per page (default: 10, max: 50)",
+            },
+          },
+          required: [],
+        },
+      },
+    ]
+
+    // Call Claude API with streaming and tools
     const stream = await anthropic.messages.stream({
       model: "claude-3-5-sonnet-20241022",
       max_tokens: 1024,
       temperature: 0.7,
       system: systemPrompt,
+      tools,
       messages: trimmedMessages.map((msg: any) => ({
         role: msg.role === "user" ? "user" : "assistant",
         content: msg.content,
@@ -196,9 +262,41 @@ export async function POST(request: NextRequest) {
       async start(controller) {
         try {
           for await (const chunk of stream) {
+            // Handle text content
             if (chunk.type === "content_block_delta" && chunk.delta.type === "text_delta") {
               const text = chunk.delta.text
               controller.enqueue(encoder.encode(`data: ${JSON.stringify({ text })}\n\n`))
+            }
+            
+            // Handle tool use (function calling)
+            if (chunk.type === "content_block_start" && chunk.content_block.type === "tool_use") {
+              const toolUse = chunk.content_block
+              console.log("[v0] Claude wants to use tool:", toolUse.name)
+              
+              // Send tool use to client for confirmation
+              controller.enqueue(
+                encoder.encode(
+                  `data: ${JSON.stringify({
+                    tool_use: {
+                      id: toolUse.id,
+                      name: toolUse.name,
+                      input: toolUse.input || {},
+                    },
+                  })}\n\n`
+                )
+              )
+            }
+            
+            // Handle tool input delta
+            if (chunk.type === "content_block_delta" && chunk.delta.type === "input_json_delta") {
+              // Stream tool input as it's being generated
+              controller.enqueue(
+                encoder.encode(
+                  `data: ${JSON.stringify({
+                    tool_input_delta: chunk.delta.partial_json,
+                  })}\n\n`
+                )
+              )
             }
           }
           controller.enqueue(encoder.encode("data: [DONE]\n\n"))

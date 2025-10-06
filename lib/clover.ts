@@ -181,6 +181,52 @@ export async function updateCloverInventory(
   }
 }
 
+export async function cancelCloverOrder(
+  cloverOrderId: string,
+  reason?: string,
+): Promise<{ success: boolean; error?: string }> {
+  try {
+    validateCloverConfig()
+
+    console.log(`[v0] Cancelling Clover order: ${cloverOrderId}`, reason ? `Reason: ${reason}` : "")
+
+    // Clover uses DELETE to cancel/delete orders
+    const response = await fetch(
+      `${CLOVER_CONFIG.baseUrl}/merchants/${CLOVER_CONFIG.merchantId}/orders/${cloverOrderId}`,
+      {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${CLOVER_CONFIG.apiKey}`,
+        },
+      },
+    )
+
+    if (!response.ok) {
+      const errorText = await response.text()
+      console.error("[v0] Clover order cancellation error:", errorText)
+      
+      // Handle specific error cases
+      if (response.status === 404) {
+        return { success: false, error: "Order not found in Clover" }
+      }
+      if (response.status === 403) {
+        return { success: false, error: "Not authorized to cancel this order" }
+      }
+      
+      throw new Error(`Clover API error: ${response.status} - ${errorText}`)
+    }
+
+    console.log("[v0] Successfully cancelled Clover order:", cloverOrderId)
+    return { success: true }
+  } catch (error) {
+    console.error("[v0] Error cancelling Clover order:", error)
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "Unknown error",
+    }
+  }
+}
+
 export async function fetchCloverOrders(): Promise<CloverOrder[]> {
   try {
     validateCloverConfig()

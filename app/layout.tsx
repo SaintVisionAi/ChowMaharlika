@@ -6,6 +6,7 @@ import { CartProvider } from "@/lib/cart-context"
 import { Toaster } from "@/components/ui/toaster"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
+import { SaintAthena } from "@/components/saint-athena"
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -34,6 +35,7 @@ export default function RootLayout({
             </main>
             <Footer />
           </div>
+          <SaintAthena />
           <Toaster />
         </CartProvider>
       </body>
