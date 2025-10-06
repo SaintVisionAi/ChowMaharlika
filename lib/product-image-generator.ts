@@ -6,10 +6,22 @@
 
 import { createClient } from '@supabase/supabase-js'
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-)
+// Lazy initialization to allow environment variables to load
+let supabaseClient: ReturnType<typeof createClient> | null = null
+
+function getSupabase() {
+  if (!supabaseClient) {
+    const url = process.env.NEXT_PUBLIC_SUPABASE_URL
+    const key = process.env.SUPABASE_SERVICE_ROLE_KEY
+    
+    if (!url || !key) {
+      throw new Error('Supabase environment variables not configured')
+    }
+    
+    supabaseClient = createClient(url, key)
+  }
+  return supabaseClient
+}
 
 interface ImageGenerationOptions {
   method: 'unsplash' | 'openai' | 'stable-diffusion' | 'placeholder'
@@ -161,6 +173,7 @@ export async function bulkGenerateProductImages(
   console.log('[ImageGen] Starting bulk image generation...')
 
   // Fetch products without images
+  const supabase = getSupabase()
   const { data: products, error } = await supabase
     .from('products')
     .select('id, name, category, description')
@@ -237,6 +250,7 @@ export async function bulkGenerateProductImages(
  * Generate image for a single product on-demand
  */
 export async function generateImageForProduct(productId: string) {
+  const supabase = getSupabase()
   const { data: product } = await supabase
     .from('products')
     .select('name, category, description')
