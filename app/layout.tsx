@@ -3,6 +3,7 @@ import { GeistSans } from "geist/font/sans"
 import { Playfair_Display } from "next/font/google"
 import "./globals.css"
 import { CartProvider } from "@/lib/cart-context"
+import { RealtimeProvider } from "@/lib/realtime-context"
 import { Toaster } from "@/components/ui/toaster"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
@@ -28,15 +29,17 @@ export default function RootLayout({
     <html lang="en" className={`${GeistSans.variable} ${playfair.variable} antialiased`}>
       <body className="min-h-screen bg-background text-foreground water-texture">
         <CartProvider>
-          <div className="flex flex-col min-h-screen">
-            <Header />
-            <main className="flex-1">
-              {children}
-            </main>
-            <Footer />
-          </div>
-          <SaintAthena />
-          <Toaster />
+          <RealtimeProvider>
+            <div className="flex flex-col min-h-screen">
+              <Header />
+              <main className="flex-1">
+                {children}
+              </main>
+              <Footer />
+            </div>
+            <SaintAthena />
+            <Toaster />
+          </RealtimeProvider>
         </CartProvider>
       </body>
     </html>

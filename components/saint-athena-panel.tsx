@@ -2,11 +2,12 @@
 
 import { useState, useRef, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { X, Send, Sparkles, Search, ShoppingCart, Loader2, Tag } from "lucide-react"
+import { X, Send, Sparkles, Search, ShoppingCart, Loader2, Tag, Wifi, WifiOff } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { useCart } from "@/lib/cart-context"
+import { useRealtime } from "@/lib/realtime-context"
 import { showSaintAthenaToast, showSaintAthenaError } from "./saint-athena-toast"
 
 interface Message {
@@ -35,6 +36,7 @@ export function SaintAthenaPanel({ isOpen, onClose }: SaintAthenaPanelProps) {
   const scrollRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
   const { addItem } = useCart()
+  const { isConnected, inventoryUpdates, dealUpdates } = useRealtime()
 
   // Auto-scroll to bottom
   useEffect(() => {
@@ -201,8 +203,25 @@ export function SaintAthenaPanel({ isOpen, onClose }: SaintAthenaPanelProps) {
                   <Sparkles className="h-5 w-5 text-white" />
                 </div>
                 <div>
-                  <h2 className="text-lg font-bold text-gray-900">SaintAthena</h2>
-                  <p className="text-xs text-gray-500">Your Shopping Expert</p>
+                  <div className="flex items-center gap-2">
+                    <h2 className="text-lg font-bold text-gray-900">SaintAthena</h2>
+                    {isConnected ? (
+                      <div className="flex items-center gap-1 rounded-full bg-green-100 px-2 py-0.5">
+                        <Wifi className="h-3 w-3 text-green-600" />
+                        <span className="text-[10px] font-medium text-green-700">Live</span>
+                      </div>
+                    ) : (
+                      <div className="flex items-center gap-1 rounded-full bg-gray-100 px-2 py-0.5">
+                        <WifiOff className="h-3 w-3 text-gray-500" />
+                        <span className="text-[10px] font-medium text-gray-600">Offline</span>
+                      </div>
+                    )}
+                  </div>
+                  <p className="text-xs text-gray-500">
+                    {isConnected 
+                      ? `2,300+ products • ${inventoryUpdates + dealUpdates} updates`
+                      : "Your Shopping Expert"}
+                  </p>
                 </div>
               </div>
               <Button
