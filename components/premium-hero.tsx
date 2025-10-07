@@ -129,106 +129,178 @@ export function PremiumHero() {
             </motion.div>
           </motion.div>
 
-          {/* Right Pane - Services & Information */}
+          {/* Right Pane - Interactive Chat Demo */}
           <motion.div
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="space-y-6"
+            className="h-full"
           >
-            {/* Service Cards */}
-            <div className="space-y-4">
-              {/* Pickup & Delivery */}
-              <Card className="p-6 bg-gradient-to-br from-zinc-900 to-zinc-800 border-yellow-500/30 hover:border-yellow-500/50 transition-all duration-300 hover:shadow-lg hover:shadow-yellow-500/20">
-                <div className="flex items-start gap-4">
-                  <div className="p-3 rounded-full bg-yellow-500/20">
-                    <Truck className="w-6 h-6 text-yellow-400" />
+            <Card className="h-full p-6 bg-gradient-to-br from-zinc-900 to-zinc-800 border-yellow-500/30 shadow-2xl shadow-yellow-500/10">
+              {/* Chat Header */}
+              <div className="flex items-center gap-3 pb-4 border-b border-yellow-500/20">
+                <div className="w-10 h-10 rounded-full bg-gradient-to-r from-yellow-500 to-yellow-600 flex items-center justify-center">
+                  <Sparkles className="w-5 h-5 text-gray-900" />
+                </div>
+                <div>
+                  <h3 className="font-bold text-white">Saint Athena</h3>
+                  <p className="text-sm text-green-400 flex items-center gap-1">
+                    <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
+                    Online Now
+                  </p>
+                </div>
+                <Badge className="ml-auto bg-yellow-500/20 text-yellow-400 border-yellow-500/30">
+                  AI Assistant
+                </Badge>
+              </div>
+
+              {/* Chat Messages */}
+              <div className="space-y-4 py-6 min-h-[400px] max-h-[500px] overflow-y-auto">
+                {/* User Message 1 */}
+                <div className="flex justify-end">
+                  <div className="bg-yellow-500/20 border border-yellow-500/30 rounded-2xl rounded-tr-sm px-4 py-3 max-w-[80%]">
+                    <p className="text-gray-200 text-sm">Here's my shopping list: salmon, shrimp, rice, and soy sauce 📝</p>
                   </div>
-                  <div className="flex-1 space-y-2">
-                    <h3 className="text-xl font-bold text-white">Pickup & Delivery</h3>
-                    <p className="text-gray-400">
-                      Order online and choose pickup at our store or convenient home delivery. 
-                      Same-day delivery available!
-                    </p>
-                    <div className="flex flex-wrap gap-2 pt-2">
-                      <Badge variant="outline" className="border-yellow-500/30 text-yellow-400">
-                        <MapPin className="w-3 h-3 mr-1" />
-                        Local Pickup
-                      </Badge>
-                      <Badge variant="outline" className="border-yellow-500/30 text-yellow-400">
-                        <Truck className="w-3 h-3 mr-1" />
-                        Home Delivery
-                      </Badge>
+                </div>
+
+                {/* AI Response 1 */}
+                <div className="flex justify-start">
+                  <div className="bg-zinc-800 border border-yellow-500/20 rounded-2xl rounded-tl-sm px-4 py-3 max-w-[85%]">
+                    <p className="text-gray-300 text-sm mb-2">Great! I found everything on your list. Here's what I recommend:</p>
+                    <div className="space-y-2 text-sm">
+                      <div className="flex items-center gap-2 text-yellow-400">
+                        <span>🐟</span>
+                        <span className="text-gray-200">Fresh Atlantic Salmon - $12.99/lb</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-yellow-400">
+                        <span>🦐</span>
+                        <span className="text-gray-200">Jumbo Shrimp - $18.99/lb</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-yellow-400">
+                        <span>🍚</span>
+                        <span className="text-gray-200">Jasmine Rice 5lb - $8.99</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-yellow-400">
+                        <span>🧂</span>
+                        <span className="text-gray-200">Premium Soy Sauce - $4.99</span>
+                      </div>
+                    </div>
+                    <p className="text-yellow-400 font-medium mt-3 text-xs">💡 Tip: Salmon is 15% off today!</p>
+                  </div>
+                </div>
+
+                {/* User Message 2 */}
+                <div className="flex justify-end">
+                  <div className="bg-yellow-500/20 border border-yellow-500/30 rounded-2xl rounded-tr-sm px-4 py-3 max-w-[80%]">
+                    <p className="text-gray-200 text-sm">What's on sale this week? 🎯</p>
+                  </div>
+                </div>
+
+                {/* AI Response 2 */}
+                <div className="flex justify-start">
+                  <div className="bg-zinc-800 border border-yellow-500/20 rounded-2xl rounded-tl-sm px-4 py-3 max-w-[85%]">
+                    <p className="text-gray-300 text-sm mb-2">This week's hottest deals:</p>
+                    <div className="space-y-2 text-sm">
+                      <div className="flex items-center justify-between">
+                        <span className="text-gray-200">🔥 All Seafood</span>
+                        <span className="text-green-400 font-bold">15% OFF</span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-gray-200">🥢 Asian Noodles</span>
+                        <span className="text-green-400 font-bold">Buy 2 Get 1</span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-gray-200">🌶️ Fresh Produce</span>
+                        <span className="text-green-400 font-bold">20% OFF</span>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </Card>
 
-              {/* Store Hours */}
-              <Card className="p-6 bg-gradient-to-br from-zinc-900 to-zinc-800 border-yellow-500/30 hover:border-yellow-500/50 transition-all duration-300 hover:shadow-lg hover:shadow-yellow-500/20">
-                <div className="flex items-start gap-4">
-                  <div className="p-3 rounded-full bg-yellow-500/20">
-                    <Clock className="w-6 h-6 text-yellow-400" />
-                  </div>
-                  <div className="flex-1 space-y-2">
-                    <h3 className="text-xl font-bold text-white">Store Hours</h3>
-                    <div className="space-y-1 text-gray-400">
-                      <div className="flex justify-between">
-                        <span>Monday - Saturday</span>
-                        <span className="text-yellow-400 font-medium">9:00 AM - 8:00 PM</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span>Sunday</span>
-                        <span className="text-yellow-400 font-medium">10:00 AM - 6:00 PM</span>
-                      </div>
+                {/* Typing Indicator */}
+                <div className="flex justify-start">
+                  <div className="bg-zinc-800 border border-yellow-500/20 rounded-2xl rounded-tl-sm px-4 py-3">
+                    <div className="flex gap-1">
+                      <div className="w-2 h-2 bg-yellow-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
+                      <div className="w-2 h-2 bg-yellow-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
+                      <div className="w-2 h-2 bg-yellow-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
                     </div>
                   </div>
                 </div>
-              </Card>
+              </div>
 
-              {/* Contact */}
-              <Card className="p-6 bg-gradient-to-br from-zinc-900 to-zinc-800 border-yellow-500/30 hover:border-yellow-500/50 transition-all duration-300 hover:shadow-lg hover:shadow-yellow-500/20">
-                <div className="flex items-start gap-4">
-                  <div className="p-3 rounded-full bg-yellow-500/20">
-                    <Phone className="w-6 h-6 text-yellow-400" />
-                  </div>
-                  <div className="flex-1 space-y-2">
-                    <h3 className="text-xl font-bold text-white">Get in Touch</h3>
-                    <p className="text-gray-400">
-                      Questions? Our team is here to help! Call us or chat with Saint Athena 24/7.
-                    </p>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="mt-2 border-yellow-500/30 text-yellow-400 hover:bg-yellow-500/10"
-                    >
-                      <Phone className="w-4 h-4 mr-2" />
-                      Contact Us
-                    </Button>
-                  </div>
+              {/* Chat Input Preview */}
+              <div className="pt-4 border-t border-yellow-500/20">
+                <div className="flex items-center gap-2 px-4 py-3 bg-zinc-900 rounded-lg border border-yellow-500/20">
+                  <span className="text-gray-500 text-sm flex-1">Click the chat icon to start shopping...</span>
+                  <Button size="sm" className="bg-gradient-to-r from-yellow-500 to-yellow-600 text-gray-900 font-semibold">
+                    <Sparkles className="w-4 h-4" />
+                  </Button>
                 </div>
-              </Card>
-
-              {/* Special Offer */}
-              <Card className="p-6 bg-gradient-to-br from-yellow-950 to-zinc-900 border-yellow-500/50 shadow-lg shadow-yellow-500/20">
-                <div className="flex items-start gap-4">
-                  <div className="p-3 rounded-full bg-yellow-500/30">
-                    <ShoppingBag className="w-6 h-6 text-yellow-300" />
-                  </div>
-                  <div className="flex-1 space-y-2">
-                    <Badge className="bg-yellow-500 text-gray-900 mb-2">
-                      Limited Time Offer
-                    </Badge>
-                    <h3 className="text-xl font-bold text-white">Fresh Catch of the Day</h3>
-                    <p className="text-gray-300">
-                      Get 15% off premium seafood when you order through Saint Athena!
-                    </p>
-                  </div>
-                </div>
-              </Card>
-            </div>
+              </div>
+            </Card>
           </motion.div>
         </div>
+
+        {/* Service Info Cards - Horizontal Row */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.4 }}
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-16"
+        >
+          {/* Pickup & Delivery */}
+          <Card className="p-4 bg-gradient-to-br from-zinc-900 to-zinc-800 border-yellow-500/20 hover:border-yellow-500/40 transition-all duration-300">
+            <div className="flex flex-col items-center text-center gap-3">
+              <div className="p-3 rounded-full bg-yellow-500/20">
+                <Truck className="w-5 h-5 text-yellow-400" />
+              </div>
+              <div>
+                <h4 className="font-bold text-white text-sm mb-1">Pickup & Delivery</h4>
+                <p className="text-xs text-gray-400">Same-day available</p>
+              </div>
+            </div>
+          </Card>
+
+          {/* Store Hours */}
+          <Card className="p-4 bg-gradient-to-br from-zinc-900 to-zinc-800 border-yellow-500/20 hover:border-yellow-500/40 transition-all duration-300">
+            <div className="flex flex-col items-center text-center gap-3">
+              <div className="p-3 rounded-full bg-yellow-500/20">
+                <Clock className="w-5 h-5 text-yellow-400" />
+              </div>
+              <div>
+                <h4 className="font-bold text-white text-sm mb-1">Store Hours</h4>
+                <p className="text-xs text-gray-400">Mon-Sat: 9AM-8PM</p>
+              </div>
+            </div>
+          </Card>
+
+          {/* Contact */}
+          <Card className="p-4 bg-gradient-to-br from-zinc-900 to-zinc-800 border-yellow-500/20 hover:border-yellow-500/40 transition-all duration-300">
+            <div className="flex flex-col items-center text-center gap-3">
+              <div className="p-3 rounded-full bg-yellow-500/20">
+                <Phone className="w-5 h-5 text-yellow-400" />
+              </div>
+              <div>
+                <h4 className="font-bold text-white text-sm mb-1">Get in Touch</h4>
+                <p className="text-xs text-gray-400">24/7 Support</p>
+              </div>
+            </div>
+          </Card>
+
+          {/* Special Offer */}
+          <Card className="p-4 bg-gradient-to-br from-yellow-950 to-zinc-900 border-yellow-500/40 hover:border-yellow-500/60 transition-all duration-300">
+            <div className="flex flex-col items-center text-center gap-3">
+              <div className="p-3 rounded-full bg-yellow-500/30">
+                <ShoppingBag className="w-5 h-5 text-yellow-300" />
+              </div>
+              <div>
+                <h4 className="font-bold text-white text-sm mb-1">Fresh Deals</h4>
+                <p className="text-xs text-yellow-400 font-medium">15% off seafood</p>
+              </div>
+            </div>
+          </Card>
+        </motion.div>
       </div>
 
       {/* Bottom Decoration */}
