@@ -1,3 +1,4 @@
+import Image from "next/image"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 
@@ -37,11 +38,13 @@ export function GlobalApproach() {
               key={index}
               className="overflow-hidden glass-effect border-primary/10 hover:border-primary/30 transition-all duration-300"
             >
-              <div className="aspect-[4/3] bg-gradient-to-br from-primary/10 to-primary/5">
-                <img
+              <div className="aspect-[4/3] bg-gradient-to-br from-primary/10 to-primary/5 relative">
+                <Image
                   src={approach.image || "/placeholder.svg"}
                   alt={approach.title}
-                  className="w-full h-full object-cover"
+                  fill
+                  className="object-cover"
+                  unoptimized
                 />
               </div>
               <div className="p-6">

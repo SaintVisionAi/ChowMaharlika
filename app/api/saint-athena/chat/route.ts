@@ -3,6 +3,13 @@ import { createClient } from "@/lib/supabase/server"
 import { processShoppingList, generateListSummary, convertToCartItems } from "@/lib/saint-athena-list-processor"
 import Anthropic from "@anthropic-ai/sdk"
 
+// Debug logging for API key
+if (!process.env.ANTHROPIC_API_KEY) {
+  console.error("[SaintAthena] ANTHROPIC_API_KEY not found in environment variables")
+} else {
+  console.log("[SaintAthena] ANTHROPIC_API_KEY loaded successfully (length:", process.env.ANTHROPIC_API_KEY.length, "chars)")
+}
+
 const anthropic = process.env.ANTHROPIC_API_KEY 
   ? new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
   : null
@@ -99,8 +106,13 @@ export async function POST(request: NextRequest) {
 
     // Regular chat mode - use Claude AI
     if (!anthropic) {
+      console.error("[SaintAthena] Anthropic client not initialized - API key missing or invalid")
       return NextResponse.json(
-        { error: "AI chat is not configured. Please check ANTHROPIC_API_KEY." },
+        { 
+          error: "AI chat is not configured. Please check ANTHROPIC_API_KEY.",
+          message: "I'm having trouble connecting right now, but I'm still here to help! Try asking about specific products, or give me a shopping list separated by commas and I'll process it for you! 🛒",
+          fallback: true
+        },
         { status: 503 }
       )
     }
@@ -178,6 +190,7 @@ export async function POST(request: NextRequest) {
 Be conversational, helpful, and always look for ways to save customers money!`
 
     try {
+      console.log("[SaintAthena] Calling Anthropic API with model: claude-3-5-sonnet-20241022")
       const completion = await anthropic.messages.create({
         model: "claude-3-5-sonnet-20241022",
         max_tokens: 1024,
@@ -190,6 +203,7 @@ Be conversational, helpful, and always look for ways to save customers money!`
           },
         ],
       })
+      console.log("[SaintAthena] API call successful, tokens used:", completion.usage)
 
       const responseText = completion.content[0].type === "text" ? completion.content[0].text : ""
 
