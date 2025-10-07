@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import Image from "next/image"
 import { useCart } from "@/lib/cart-context"
+import { getCategoryImage } from "@/lib/category-images"
 
 interface Product {
   id: string
@@ -42,14 +43,18 @@ export function ProductGrid({ products }: { products: Product[] }) {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-      {products.map((product) => (
+      {products.map((product) => {
+        const categoryImage = getCategoryImage(product.category)
+        
+        return (
         <Card key={product.id} className="overflow-hidden hover:shadow-lg transition-shadow">
           <div className="aspect-square relative bg-muted">
             <Image
-              src={product.image_url || "/placeholder.svg?height=400&width=400"}
-              alt={product.name}
+              src={categoryImage.url}
+              alt={categoryImage.alt}
               fill
               className="object-cover"
+              unoptimized
             />
             {product.stock_quantity < 10 && product.stock_quantity > 0 && (
               <Badge className="absolute top-2 right-2" variant="destructive">
@@ -76,7 +81,8 @@ export function ProductGrid({ products }: { products: Product[] }) {
             </Button>
           </CardFooter>
         </Card>
-      ))}
+      )}}
+      )}
     </div>
   )
 }

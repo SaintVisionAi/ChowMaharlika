@@ -11,9 +11,9 @@
 
 import { createClient } from '@supabase/supabase-js'
 
-// Supabase config
+// Supabase config - use service role key to bypass RLS
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY! // Service role key bypasses RLS
 
 const supabase = createClient(supabaseUrl, supabaseKey)
 
@@ -99,11 +99,12 @@ async function updateProductImages() {
   console.log('🚀 Starting Product Image Update Script\n')
   console.log('📊 Fetching products from database...\n')
 
-  // Get all products
+  // Get all products - Supabase has 1000 row limit by default, fetch all with range
   const { data: products, error: fetchError } = await supabase
     .from('products')
     .select('id, clover_id, name, category, image_url')
     .order('name')
+    .range(0, 10000) // Fetch up to 10,000 products
 
   if (fetchError) {
     console.error('❌ Error fetching products:', fetchError)
