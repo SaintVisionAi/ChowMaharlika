@@ -129,13 +129,13 @@ export default function RewardsPage() {
   if (!user) {
     return (
       <div className="container mx-auto px-4 py-20">
-        <Card className="max-w-2xl mx-auto p-12 text-center">
-          <Sparkles className="h-16 w-16 mx-auto text-pink-500 mb-6" />
-          <h1 className="text-3xl font-bold mb-4">Maharlika Rewards</h1>
-          <p className="text-gray-600 mb-8">
+        <Card className="max-w-2xl mx-auto p-12 text-center glass-effect border-yellow-500/20">
+          <Sparkles className="h-16 w-16 mx-auto text-yellow-400 mb-6" />
+          <h1 className="text-3xl font-bold mb-4 gold-glow">Maharlika Rewards</h1>
+          <p className="text-gray-300 mb-8">
             Sign in to join our rewards program and start earning points!
           </p>
-          <Button onClick={() => router.push("/auth/login")} size="lg">
+          <Button onClick={() => router.push("/auth/login")} size="lg" className="bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 hover:from-yellow-300 hover:to-yellow-500 text-gray-900 font-bold">
             Sign In to Join
           </Button>
         </Card>
@@ -146,27 +146,27 @@ export default function RewardsPage() {
   if (!enrolled) {
     return (
       <div className="container mx-auto px-4 py-20">
-        <Card className="max-w-2xl mx-auto p-12 text-center">
-          <Gift className="h-16 w-16 mx-auto text-pink-500 mb-6" />
-          <h1 className="text-3xl font-bold mb-4">Join Maharlika Rewards!</h1>
-          <p className="text-gray-600 mb-8">
+        <Card className="max-w-2xl mx-auto p-12 text-center glass-effect border-yellow-500/20">
+          <Gift className="h-16 w-16 mx-auto text-yellow-400 mb-6" />
+          <h1 className="text-3xl font-bold mb-4 gold-glow">Join Maharlika Rewards!</h1>
+          <p className="text-gray-300 mb-8">
             Get 20 welcome points just for joining. Earn 1 point per $1 spent!
           </p>
           <div className="grid grid-cols-3 gap-4 mb-8">
-            <div className="p-4 bg-orange-50 rounded-lg">
+            <div className="p-4 bg-zinc-900 rounded-lg border border-orange-500/30">
               <Award className="h-8 w-8 mx-auto mb-2" style={{ color: "#CD7F32" }} />
-              <div className="font-bold">Bronze</div>
-              <div className="text-sm text-gray-600">0-499 pts</div>
+              <div className="font-bold text-white">Bronze</div>
+              <div className="text-sm text-gray-400">0-499 pts</div>
             </div>
-            <div className="p-4 bg-gray-50 rounded-lg">
+            <div className="p-4 bg-zinc-900 rounded-lg border border-gray-500/30">
               <Star className="h-8 w-8 mx-auto mb-2" style={{ color: "#C0C0C0" }} />
-              <div className="font-bold">Silver</div>
-              <div className="text-sm text-gray-600">500-999 pts</div>
+              <div className="font-bold text-white">Silver</div>
+              <div className="text-sm text-gray-400">500-999 pts</div>
             </div>
-            <div className="p-4 bg-yellow-50 rounded-lg">
+            <div className="p-4 bg-zinc-900 rounded-lg border border-yellow-500/30">
               <Crown className="h-8 w-8 mx-auto mb-2" style={{ color: "#FFD700" }} />
-              <div className="font-bold">Gold</div>
-              <div className="text-sm text-gray-600">1000+ pts</div>
+              <div className="font-bold text-white">Gold</div>
+              <div className="text-sm text-gray-400">1000+ pts</div>
             </div>
           </div>
           <Button 
@@ -187,6 +187,7 @@ export default function RewardsPage() {
               }
             }}
             size="lg"
+            className="bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 hover:from-yellow-300 hover:to-yellow-500 text-gray-900 font-bold"
           >
             Enroll Now - Get 20 Points Free!
           </Button>
@@ -198,33 +199,29 @@ export default function RewardsPage() {
   return (
     <div className="container mx-auto px-4 py-8">
       {/* Header Card */}
-      <Card className="p-8 mb-8 bg-gradient-to-br from-pink-50 to-white">
+      <Card className="p-8 mb-8 glass-effect border-yellow-500/20">
         <div className="flex items-center justify-between">
           <div>
             <div className="flex items-center gap-3 mb-2">
-              <h1 className="text-3xl font-bold">Maharlika Rewards</h1>
+              <h1 className="text-3xl font-bold gold-glow">Maharlika Rewards</h1>
               <Badge 
                 variant="outline" 
-                className="text-lg px-3 py-1"
-                style={{ 
-                  borderColor: balance?.tier?.current?.color,
-                  color: balance?.tier?.current?.color 
-                }}
+                className="text-lg px-3 py-1 border-yellow-500 text-yellow-400"
               >
                 {getTierIcon(balance?.tier?.current?.name)}
                 <span className="ml-2">{balance?.tier?.current?.name}</span>
               </Badge>
             </div>
-            <p className="text-gray-600">
+            <p className="text-gray-300">
               Member since {new Date(balance?.member?.enrollment_date).toLocaleDateString()}
             </p>
           </div>
           <div className="text-right">
-            <div className="text-5xl font-bold text-pink-600">
+            <div className="text-5xl font-bold gold-shimmer">
               {balance?.points?.current_balance}
             </div>
-            <div className="text-gray-600">Points Available</div>
-            <div className="text-sm text-gray-500">
+            <div className="text-gray-300 font-medium">Points Available</div>
+            <div className="text-sm text-yellow-400">
               ≈ ${balance?.points?.dollar_value} in rewards
             </div>
           </div>
@@ -232,22 +229,22 @@ export default function RewardsPage() {
 
         {/* Tier Progress */}
         {!balance?.tier?.progress?.isMaxTier && (
-          <div className="mt-6">
+          <div className="mt-6 p-4 bg-zinc-900/50 rounded-lg border border-yellow-500/10">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-medium">
+              <span className="text-sm font-medium text-gray-200">
                 Progress to {balance?.tier?.progress?.nextTier?.tier_name}
               </span>
-              <span className="text-sm text-gray-600">
+              <span className="text-sm text-yellow-400">
                 {balance?.tier?.progress?.pointsUntilNext} points to go
               </span>
             </div>
-            <Progress value={balance?.tier?.progress?.progressPercentage} className="h-3" />
+            <Progress value={balance?.tier?.progress?.progressPercentage} className="h-3 bg-zinc-800" />
           </div>
         )}
       </Card>
 
       <Tabs defaultValue="rewards" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-4">
+        <TabsList className="grid w-full grid-cols-4 bg-zinc-900 border border-yellow-500/20">
           <TabsTrigger value="rewards">
             <Gift className="h-4 w-4 mr-2" />
             Rewards
@@ -269,14 +266,14 @@ export default function RewardsPage() {
         <TabsContent value="rewards">
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {catalog?.rewards?.all?.map((reward: any) => (
-              <Card key={reward.id} className="p-6">
+              <Card key={reward.id} className="p-6 glass-effect border-yellow-500/20 hover-lift">
                 <div className="flex items-start justify-between mb-4">
                   <div className="flex-1">
-                    <h3 className="font-bold text-lg mb-1">{reward.reward_name}</h3>
-                    <p className="text-sm text-gray-600">{reward.reward_description}</p>
+                    <h3 className="font-bold text-lg mb-1 text-white">{reward.reward_name}</h3>
+                    <p className="text-sm text-gray-300">{reward.reward_description}</p>
                   </div>
                   {reward.is_featured && (
-                    <Badge variant="secondary" className="bg-yellow-100">
+                    <Badge variant="secondary" className="bg-yellow-500/20 text-yellow-400 border-yellow-500/30">
                       <Sparkles className="h-3 w-3 mr-1" />
                       Featured
                     </Badge>
@@ -285,11 +282,11 @@ export default function RewardsPage() {
                 
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
-                    <span className="text-2xl font-bold text-pink-600">
+                    <span className="text-2xl font-bold text-yellow-400">
                       {reward.points_required} pts
                     </span>
                     {reward.dollar_value && (
-                      <span className="text-gray-600">
+                      <span className="text-gray-300">
                         ${reward.dollar_value} value
                       </span>
                     )}
@@ -298,7 +295,7 @@ export default function RewardsPage() {
                   <Button
                     onClick={() => handleRedeem(reward.id)}
                     disabled={balance?.points?.current_balance < reward.points_required}
-                    className="w-full"
+                    className="w-full bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 hover:from-yellow-300 hover:to-yellow-500 text-gray-900 font-bold disabled:from-gray-700 disabled:to-gray-800 disabled:text-gray-400"
                   >
                     {balance?.points?.current_balance >= reward.points_required ? (
                       <>
@@ -323,14 +320,14 @@ export default function RewardsPage() {
         </TabsContent>
 
         <TabsContent value="history">
-          <Card className="p-6">
-            <h3 className="font-bold text-xl mb-4">Transaction History</h3>
+          <Card className="p-6 glass-effect border-yellow-500/20">
+            <h3 className="font-bold text-xl mb-4 text-white">Transaction History</h3>
             <div className="space-y-4">
               {history?.transactions?.map((tx: any) => (
-                <div key={tx.id} className="flex items-center justify-between border-b pb-4">
+                <div key={tx.id} className="flex items-center justify-between border-b border-zinc-700 pb-4">
                   <div>
-                    <div className="font-medium">{tx.description}</div>
-                    <div className="text-sm text-gray-600">
+                    <div className="font-medium text-white">{tx.description}</div>
+                    <div className="text-sm text-gray-400">
                       {new Date(tx.date).toLocaleString()}
                     </div>
                   </div>
@@ -344,16 +341,16 @@ export default function RewardsPage() {
         </TabsContent>
 
         <TabsContent value="referral">
-          <Card className="p-8 text-center">
-            <Users className="h-16 w-16 mx-auto text-pink-500 mb-4" />
-            <h3 className="font-bold text-2xl mb-2">Refer Friends, Earn Points!</h3>
-            <p className="text-gray-600 mb-6">
+          <Card className="p-8 text-center glass-effect border-yellow-500/20">
+            <Users className="h-16 w-16 mx-auto text-yellow-400 mb-4" />
+            <h3 className="font-bold text-2xl mb-2 text-white">Refer Friends, Earn Points!</h3>
+            <p className="text-gray-300 mb-6">
               Share your code. You get 25 points, they get 20 points!
             </p>
             
-            <div className="bg-gray-50 rounded-lg p-6 mb-6">
-              <div className="text-sm text-gray-600 mb-2">Your Referral Code</div>
-              <div className="text-3xl font-mono font-bold text-pink-600 mb-4">
+            <div className="bg-zinc-900 rounded-lg p-6 mb-6 border border-yellow-500/20">
+              <div className="text-sm text-gray-400 mb-2">Your Referral Code</div>
+              <div className="text-3xl font-mono font-bold text-yellow-400 mb-4">
                 {balance?.member?.referral_code}
               </div>
               <Button
@@ -361,12 +358,13 @@ export default function RewardsPage() {
                   navigator.clipboard.writeText(balance?.member?.referral_code)
                   toast({ title: "Copied!", description: "Referral code copied to clipboard" })
                 }}
+                className="bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 hover:from-yellow-300 hover:to-yellow-500 text-gray-900 font-bold"
               >
                 Copy Code
               </Button>
             </div>
 
-            <div className="text-sm text-gray-600">
+            <div className="text-sm text-gray-300">
               Referrals completed: {balance?.member?.referral_count}
             </div>
           </Card>
@@ -374,17 +372,17 @@ export default function RewardsPage() {
 
         <TabsContent value="stats">
           <div className="grid md:grid-cols-3 gap-6">
-            <Card className="p-6">
-              <div className="text-sm text-gray-600 mb-2">Lifetime Points Earned</div>
-              <div className="text-3xl font-bold">{balance?.points?.lifetime_earned}</div>
+            <Card className="p-6 glass-effect border-yellow-500/20 text-center">
+              <div className="text-sm text-gray-400 mb-2">Lifetime Points Earned</div>
+              <div className="text-3xl font-bold text-yellow-400">{balance?.points?.lifetime_earned}</div>
             </Card>
-            <Card className="p-6">
-              <div className="text-sm text-gray-600 mb-2">Total Purchases</div>
-              <div className="text-3xl font-bold">{balance?.purchase_stats?.total_purchases}</div>
+            <Card className="p-6 glass-effect border-yellow-500/20 text-center">
+              <div className="text-sm text-gray-400 mb-2">Total Purchases</div>
+              <div className="text-3xl font-bold text-white">{balance?.purchase_stats?.total_purchases}</div>
             </Card>
-            <Card className="p-6">
-              <div className="text-sm text-gray-600 mb-2">Total Spent</div>
-              <div className="text-3xl font-bold">${balance?.purchase_stats?.total_spent?.toFixed(2)}</div>
+            <Card className="p-6 glass-effect border-yellow-500/20 text-center">
+              <div className="text-sm text-gray-400 mb-2">Total Spent</div>
+              <div className="text-3xl font-bold text-white">${balance?.purchase_stats?.total_spent?.toFixed(2)}</div>
             </Card>
           </div>
         </TabsContent>
