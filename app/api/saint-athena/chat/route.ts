@@ -191,10 +191,12 @@ Be conversational, helpful, and always look for ways to save customers money!`
 
     try {
       const model = process.env.ANTHROPIC_CLAUDE_MODEL || "claude-sonnet-4-20250514"
-      console.log("[SaintAthena] Calling Anthropic API with model:", model)
+      // Use reasonable max_tokens for Vercel's 10-minute timeout
+      const maxTokens = Math.min(Number(process.env.MAX_TOKENS) || 2048, 4096)
+      console.log("[SaintAthena] Calling Anthropic API with model:", model, "max_tokens:", maxTokens)
       const completion = await anthropic.messages.create({
         model: model,
-        max_tokens: Number(process.env.MAX_TOKENS) || 1024,
+        max_tokens: maxTokens,
         temperature: 0.7,
         system: systemPrompt,
         messages: [
