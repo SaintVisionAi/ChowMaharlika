@@ -9,6 +9,7 @@ import { useCart } from "@/lib/cart-context"
 import { Star, Heart, Eye, ShoppingCart } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { ProductImageFallback } from "@/components/product-image-fallback"
+import { getCategoryImage } from "@/lib/category-images"
 
 interface Product {
   id: string
@@ -75,8 +76,18 @@ export function PremiumProductCard({ product, onViewDetails, className }: Premiu
 
   const [imageError, setImageError] = useState(false)
   
-  // Check if image_url is a placeholder
-  const isPlaceholder = product.image_url?.includes('placeholder') || !product.image_url
+  // Get category image as fallback
+  const categoryImage = getCategoryImage(product.category)
+  
+  // Determine image source (priority: product URL > category)
+  const getImageSource = () => {
+    if (product.image_url && !product.image_url.includes('placeholder') && !imageError) {
+      return product.image_url
+    }
+    return categoryImage.url
+  }
+  
+  const imageSource = getImageSource()
 
   return (
     <Card 
@@ -126,29 +137,19 @@ export function PremiumProductCard({ product, onViewDetails, className }: Premiu
 
       {/* Product Image */}
       <div className="aspect-[4/3] relative overflow-hidden bg-gradient-to-br from-zinc-900 to-black">
-        {!isPlaceholder && !imageError ? (
-          <Image
-            src={product.image_url!}
-            alt={product.name}
-            fill
-            className={cn(
-              "object-cover transition-all duration-700 ease-out",
-              isHovered && "scale-110 brightness-110"
-            )}
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            unoptimized
-            onError={() => setImageError(true)}
-          />
-        ) : (
-          <ProductImageFallback 
-            productName={product.name} 
-            category={product.category}
-            className={cn(
-              "transition-all duration-700 ease-out",
-              isHovered && "scale-110"
-            )}
-          />
-        )}
+        <Image
+          src={imageSource}
+          alt={categoryImage.alt}
+          fill
+          className={cn(
+            "object-cover transition-all duration-700 ease-out",
+            isHovered && "scale-110 brightness-110"
+          )}
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          unoptimized
+          onError={() => setImageError(true)}
+        />
+      }
         
         {/* Gradient Overlay */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />

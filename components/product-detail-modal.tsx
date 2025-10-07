@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import Image from "next/image"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
@@ -9,6 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Separator } from "@/components/ui/separator"
 import { useCart } from "@/lib/cart-context"
 import { ProductImageFallback } from "@/components/product-image-fallback"
+import { getCategoryImage } from "@/lib/category-images"
 import { 
   Star, 
   Heart, 
@@ -51,11 +52,62 @@ export function ProductDetailModal({ product, isOpen, onClose }: ProductDetailMo
   const [isLoading, setIsLoading] = useState(false)
   const [isFavorited, setIsFavorited] = useState(false)
   const [imageError, setImageError] = useState(false)
+  const [generatedImage, setGeneratedImage] = useState<string | null>(null)
+  const [imageLoading, setImageLoading] = useState(false)
+
+  // Generate product-specific image on-demand when modal opens
+  useEffect(() => {
+    if (!product || !isOpen) return
+    
+    // Skip if we already have a valid image
+    if (product.image_url && !product.image_url.includes('placeholder')) {
+      return
+    }
+
+    // Generate image on-demand
+    const generateImage = async () => {
+      setImageLoading(true)
+      try {
+        const response = await fetch('/api/unsplash/generate-image', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            productName: product.name,
+            category: product.category
+          })
+        })
+
+        if (response.ok) {
+          const data = await response.json()
+          setGeneratedImage(data.imageUrl)
+        }
+      } catch (error) {
+        console.error('[ProductDetailModal] Image generation failed:', error)
+        // Will fall back to category image
+      } finally {
+        setImageLoading(false)
+      }
+    }
+
+    generateImage()
+  }, [product, isOpen])
 
   if (!product) return null
 
-  // Check if image is available
-  const hasValidImage = product.image_url && !product.image_url.includes('placeholder') && !imageError
+  // Determine which image to use (priority: product URL > generated > category)
+  const getImageSource = () => {
+    if (product.image_url && !product.image_url.includes('placeholder') && !imageError) {
+      return product.image_url
+    }
+    if (generatedImage) {
+      return generatedImage
+    }
+    // Fall back to category image
+    return getCategoryImage(product.category).url
+  }
+
+  const imageSource = getImageSource()
+  const hasValidImage = !!imageSource
 
   const handleAddToCart = async () => {
     setIsLoading(true)
@@ -120,9 +172,16 @@ export function ProductDetailModal({ product, isOpen, onClose }: ProductDetailMo
         <div className="grid md:grid-cols-2 h-full">
           {/* Product Image */}
           <div className="relative aspect-square md:aspect-auto bg-gradient-to-br from-zinc-900 to-black">
-            {hasValidImage ? (
+            {imageLoading ? (
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="text-white text-center">
+                  <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto mb-2"></div>
+                  <p className="text-sm">Loading image...</p>
+                </div>
+              </div>
+            ) : hasValidImage ? (
               <Image
-                src={product.image_url!}
+                src={imageSource}
                 alt={product.name}
                 fill
                 className="object-cover"
