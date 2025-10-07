@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Separator } from "@/components/ui/separator"
 import { useCart } from "@/lib/cart-context"
+import { ProductImageFallback } from "@/components/product-image-fallback"
 import { 
   Star, 
   Heart, 
@@ -49,8 +50,12 @@ export function ProductDetailModal({ product, isOpen, onClose }: ProductDetailMo
   const [quantity, setQuantity] = useState(1)
   const [isLoading, setIsLoading] = useState(false)
   const [isFavorited, setIsFavorited] = useState(false)
+  const [imageError, setImageError] = useState(false)
 
   if (!product) return null
+
+  // Check if image is available
+  const hasValidImage = product.image_url && !product.image_url.includes('placeholder') && !imageError
 
   const handleAddToCart = async () => {
     setIsLoading(true)
@@ -111,17 +116,26 @@ export function ProductDetailModal({ product, isOpen, onClose }: ProductDetailMo
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-4xl max-h-[90vh] overflow-hidden p-0">
+      <DialogContent className="max-w-4xl max-h-[90vh] overflow-hidden p-0 bg-white text-gray-900 border-zinc-700">
         <div className="grid md:grid-cols-2 h-full">
           {/* Product Image */}
-          <div className="relative aspect-square md:aspect-auto bg-gradient-to-br from-gray-50 to-gray-100">
-            <Image
-              src={product.image_url || `/api/placeholder/600/600?text=${encodeURIComponent(product.name)}`}
-              alt={product.name}
-              fill
-              className="object-cover"
-              sizes="(max-width: 768px) 100vw, 50vw"
-            />
+          <div className="relative aspect-square md:aspect-auto bg-gradient-to-br from-zinc-900 to-black">
+            {hasValidImage ? (
+              <Image
+                src={product.image_url!}
+                alt={product.name}
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, 50vw"
+                unoptimized
+                onError={() => setImageError(true)}
+              />
+            ) : (
+              <ProductImageFallback 
+                productName={product.name}
+                category={product.category}
+              />
+            )}
             
             {/* Favorite Button */}
             <Button
