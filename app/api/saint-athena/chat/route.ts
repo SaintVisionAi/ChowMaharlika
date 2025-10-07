@@ -190,7 +190,8 @@ export async function POST(request: NextRequest) {
 Be conversational, helpful, and always look for ways to save customers money!`
 
     try {
-      const model = process.env.ANTHROPIC_CLAUDE_MODEL || "claude-sonnet-4-20250514"
+      // Use Claude 3.7 Sonnet (latest stable model)
+      const model = process.env.ANTHROPIC_CLAUDE_MODEL || "claude-3-7-sonnet-20250219"
       // Use reasonable max_tokens for Vercel's 10-minute timeout
       const maxTokens = Math.min(Number(process.env.MAX_TOKENS) || 2048, 4096)
       console.log("[SaintAthena] Calling Anthropic API with model:", model, "max_tokens:", maxTokens)
