@@ -5,7 +5,7 @@ import { PremiumProductCard } from "@/components/premium-product-card"
 import { ProductDetailModal } from "@/components/product-detail-modal"
 import { ProductFilters, FilterOptions } from "@/components/product-filters"
 import { Pagination } from "@/components/pagination"
-import { SaintAthenaIntro } from "@/components/saint-athena-intro"
+// import { SaintAthenaIntro } from "@/components/saint-athena-intro" // Only on home page
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
@@ -172,10 +172,9 @@ export function ProductsCatalogClient({ products }: ProductsCatalogClientProps) 
 
   return (
     <>
-      {/* SaintAthena Introduction */}
-      <SaintAthenaIntro onOpenChat={() => {}} />
+      {/* SaintAthena intro removed - only on home page, floating chat button available */}
 
-      <div className="space-y-8 mt-12">
+      <div className="space-y-8">
         {/* Header */}
         <div className="text-center space-y-4">
           <h1 className="text-4xl md:text-5xl font-serif font-bold gold-shimmer">

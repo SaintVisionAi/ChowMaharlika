@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { PremiumProductGrid } from "@/components/premium-product-grid"
-import { SaintAthenaIntro } from "@/components/saint-athena-intro"
+// import { SaintAthenaIntro } from "@/components/saint-athena-intro" // Only on home page
 
 interface Product {
   id: string
@@ -27,8 +27,7 @@ export function GroceryPageClient({ products }: GroceryPageClientProps) {
 
   return (
     <>
-      {/* SaintAthena Introduction */}
-      <SaintAthenaIntro onOpenChat={() => setIsChatOpen(true)} />
+      {/* SaintAthena intro removed - only on home page, floating chat button available */}
 
       {/* Products Grid */}
       <PremiumProductGrid 

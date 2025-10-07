@@ -10,6 +10,7 @@ import { createClient } from "@/lib/supabase/client"
 import ReactMarkdown from "react-markdown"
 import remarkGfm from "remark-gfm"
 import { motion, AnimatePresence } from "framer-motion"
+import Image from "next/image"
 import { 
   MessageCircle, 
   X, 
@@ -245,9 +246,17 @@ What can I help you with today?`,
             <Button
               onClick={() => setIsOpen(true)}
               size="lg"
-              className="h-16 w-16 rounded-full bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-400 hover:to-yellow-500 text-gray-900 shadow-2xl shadow-yellow-500/50 hover:shadow-yellow-500/70 transition-all duration-300 hover:scale-110"
+              title="Chat with SaintAthena - Powered by SaintSal™"
+              className="h-16 w-16 rounded-full bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-400 hover:to-yellow-500 text-gray-900 shadow-2xl shadow-yellow-500/50 hover:shadow-yellow-500/70 transition-all duration-300 hover:scale-110 flex items-center justify-center"
             >
-              <MessageCircle className="w-7 h-7" />
+              <Image 
+                src="/saintsallogo.ico" 
+                alt="SaintSal™ by SaintVision.Ai" 
+                width={32}
+                height={32}
+                className="object-contain"
+                unoptimized
+              />
             </Button>
             {/* Pulse Animation */}
             <div className="absolute inset-0 rounded-full bg-yellow-500 animate-ping opacity-30"></div>
@@ -283,14 +292,21 @@ What can I help you with today?`,
               <div className="flex items-center justify-between p-4 border-b border-yellow-500/20 bg-gradient-to-r from-yellow-950/50 to-transparent">
                 <div className="flex items-center gap-3">
                   <div className="relative">
-                    <div className="w-10 h-10 rounded-full bg-gradient-to-r from-yellow-500 to-yellow-600 flex items-center justify-center">
-                      <Sparkles className="w-5 h-5 text-gray-900" />
+                    <div className="w-10 h-10 rounded-full bg-gradient-to-r from-yellow-500 to-yellow-600 flex items-center justify-center p-1">
+                      <Image 
+                        src="/saintsallogo.ico" 
+                        alt="SaintSal™" 
+                        width={36}
+                        height={36}
+                        className="object-contain"
+                        unoptimized
+                      />
                     </div>
                     <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-zinc-900"></div>
                   </div>
                   <div>
                     <h3 className="font-bold text-white">Saint Athena</h3>
-                    <p className="text-xs text-gray-400">AI Shopping Assistant</p>
+                    <p className="text-xs text-gray-400">Powered by SaintSal™</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
