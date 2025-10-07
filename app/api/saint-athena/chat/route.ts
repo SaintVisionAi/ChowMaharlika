@@ -190,10 +190,11 @@ export async function POST(request: NextRequest) {
 Be conversational, helpful, and always look for ways to save customers money!`
 
     try {
-      console.log("[SaintAthena] Calling Anthropic API with model: claude-3-5-sonnet-20241022")
+      const model = process.env.ANTHROPIC_CLAUDE_MODEL || "claude-sonnet-4-20250514"
+      console.log("[SaintAthena] Calling Anthropic API with model:", model)
       const completion = await anthropic.messages.create({
-        model: "claude-3-5-sonnet-20241022",
-        max_tokens: 1024,
+        model: model,
+        max_tokens: Number(process.env.MAX_TOKENS) || 1024,
         temperature: 0.7,
         system: systemPrompt,
         messages: [
