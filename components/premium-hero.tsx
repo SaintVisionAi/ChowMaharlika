@@ -47,7 +47,7 @@ export function PremiumHero() {
                 className="text-5xl lg:text-7xl font-bold leading-tight"
               >
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600">
-                  Meet Saint Athena
+                  Welcome to the Maharlika Family
                 </span>
               </motion.h1>
               
@@ -57,7 +57,7 @@ export function PremiumHero() {
                 transition={{ delay: 0.4 }}
                 className="text-xl lg:text-2xl text-gray-300 leading-relaxed"
               >
-                Your Intelligent Shopping Companion
+                Premium Filipino Seafood & Grocery Since Day One
               </motion.p>
             </div>
 
@@ -69,12 +69,12 @@ export function PremiumHero() {
               className="space-y-4 text-gray-400 leading-relaxed text-lg"
             >
               <p>
-                Saint Athena is your personal AI assistant, designed to make shopping at Maharlika Seafood & Mart 
-                effortless and intelligent. She knows our entire inventory, tracks your cart, and provides 
-                personalized recommendations.
+                At Maharlika Seafood & Mart, you're not just a customer—you're family. We bring you the freshest 
+                seafood, authentic Filipino groceries, and a shopping experience powered by innovation.
               </p>
               <p className="text-yellow-400 font-medium">
-                ✨ Just tell her what you need, and she'll handle the rest.
+                🎁 <strong>Earn rewards with every purchase!</strong> Plus, get exclusive deals when you shop with Saint Athena, 
+                our AI assistant in the chat box next to you.
               </p>
             </motion.div>
 
@@ -113,7 +113,7 @@ export function PremiumHero() {
                 className="bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-400 hover:to-yellow-500 text-gray-900 font-bold text-lg px-8 py-6 shadow-lg shadow-yellow-500/50"
               >
                 <Sparkles className="w-5 h-5 mr-2" />
-                Chat with Saint Athena
+                Start Shopping
               </Button>
               <Button
                 asChild
